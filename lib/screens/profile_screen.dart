@@ -14,75 +14,85 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  String userName = "";
+
+  @override
+  void initState() {
+    super.initState();
+    userName = widget.user.firstName == ""
+        ? "Your name"
+        : "${widget.user.firstName} ${widget.user.lastName}";
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Profile"),
-      ),
+      appBar: AppBar(title: Text("Profile")),
       body: Container(
-          width: double.infinity,
-          padding: EdgeInsets.all(10),
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Column(
-              children: [
-                CircleAvatar(
-                    backgroundImage: AssetImage(defaultImagePath), radius: 60),
-                Text("Tessa Thompson",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                    )),
-                Text("Kathmandu, Nepal", style: TextStyle(fontSize: 18)),
-                Divider(),
-                SizedBox(height: 10),
-                Tile(text: "Account settings"),
-                Tile(text: "Bookings"),
-                Tile(text: "App preferences"),
-                Tile(text: "Upgrade to premium"),
-                SizedBox(
-                  height: 30,
+        width: double.infinity,
+        padding: EdgeInsets.all(10),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Column(
+            children: [
+              CircleAvatar(
+                backgroundImage: NetworkImage(
+                  widget.user.photoUrl ?? defaultImagePath,
                 ),
-                Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(width: 1, color: Colors.grey),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Column(
+                radius: 60,
+              ),
+              Text(
+                userName,
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+              ),
+              Text("Kathmandu, Nepal", style: TextStyle(fontSize: 18)),
+              Divider(),
+              SizedBox(height: 10),
+              Tile(text: "Account settings"),
+              Tile(text: "Bookings"),
+              Tile(text: "App preferences"),
+              Tile(text: "Upgrade to premium"),
+              SizedBox(height: 30),
+              Container(
+                decoration: BoxDecoration(
+                  border: Border.all(width: 1, color: Colors.grey),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Column(
+                  children: [
+                    Text("Rate our service", style: TextStyle(fontSize: 18)),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("Rate our service",
-                            style: TextStyle(fontSize: 18)),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            InkWell(
-                                onTap: () {},
-                                child:
-                                    Icon(Icons.star_border_outlined, size: 30)),
-                            InkWell(
-                                onTap: () {},
-                                child:
-                                    Icon(Icons.star_border_outlined, size: 30)),
-                            InkWell(
-                                onTap: () {},
-                                child:
-                                    Icon(Icons.star_border_outlined, size: 30)),
-                            InkWell(
-                                onTap: () {},
-                                child:
-                                    Icon(Icons.star_border_outlined, size: 30)),
-                            InkWell(
-                                onTap: () {},
-                                child:
-                                    Icon(Icons.star_border_outlined, size: 30)),
-                          ],
-                        )
+                        InkWell(
+                          onTap: () {},
+                          child: Icon(Icons.star_border_outlined, size: 30),
+                        ),
+                        InkWell(
+                          onTap: () {},
+                          child: Icon(Icons.star_border_outlined, size: 30),
+                        ),
+                        InkWell(
+                          onTap: () {},
+                          child: Icon(Icons.star_border_outlined, size: 30),
+                        ),
+                        InkWell(
+                          onTap: () {},
+                          child: Icon(Icons.star_border_outlined, size: 30),
+                        ),
+                        InkWell(
+                          onTap: () {},
+                          child: Icon(Icons.star_border_outlined, size: 30),
+                        ),
                       ],
-                    ))
-              ],
-            ),
-          )),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
@@ -96,20 +106,16 @@ class Tile extends StatelessWidget {
     return InkWell(
       onTap: () {},
       child: ConstrainedBox(
-        constraints: BoxConstraints(
-          minWidth: 350,
-        ),
+        constraints: BoxConstraints(minWidth: 350),
         child: Container(
           width: double.infinity,
           margin: EdgeInsets.only(top: 10),
           padding: EdgeInsets.all(10),
           decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey, width: 1),
-              borderRadius: BorderRadius.circular(10)),
-          child: Text(
-            this.text,
-            style: TextStyle(fontSize: 18),
+            border: Border.all(color: Colors.grey, width: 1),
+            borderRadius: BorderRadius.circular(10),
           ),
+          child: Text(this.text, style: TextStyle(fontSize: 18)),
         ),
       ),
     );
