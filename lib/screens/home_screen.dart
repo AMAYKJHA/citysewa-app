@@ -3,9 +3,7 @@ import "package:shared_preferences/shared_preferences.dart"
     show SharedPreferences;
 import "package:citysewa/screens/profile_screen.dart";
 import "package:citysewa/screens/widgets.dart";
-import "package:citysewa/api/models.dart" show UserModel;
 
-const defaultProfilePhoto = "lib/assets/user1.webp";
 const appIcon = "lib/assets/app_icon.png";
 
 const List<List<Widget>> popularServices = [

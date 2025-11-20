@@ -1,12 +1,10 @@
 import "package:flutter/material.dart";
 
-import "package:citysewa/api/models.dart" show UserModel;
 import "package:citysewa/screens/update_profile_screen.dart"
     show UpdateProfileScreen;
 import "package:shared_preferences/shared_preferences.dart"
     show SharedPreferences;
 
-const defaultImagePath = "lib/assets/user1.webp";
 const appIcon = "lib/assets/app_icon.png";
 
 class ProfileScreen extends StatefulWidget {

@@ -2,6 +2,7 @@ import "package:http/http.dart" as http;
 import "package:shared_preferences/shared_preferences.dart"
     show SharedPreferences;
 import "dart:convert";
+
 import "models.dart";
 
 const baseUrl = "https://citysewa.onrender.com/api";
@@ -46,7 +47,6 @@ class AuthService {
         throw Exception("Register failed: ${response.body}");
       }
     } catch (e) {
-      print("Error-> $e");
       throw Exception(e);
     }
   }
@@ -77,7 +77,6 @@ class AuthService {
         body: jsonEncode(body),
       );
 
-      print(response.body);
       if (response.statusCode == 200 || response.statusCode == 201) {
         return jsonDecode(response.body);
       } else {
@@ -86,6 +85,5 @@ class AuthService {
     } catch (e) {
       throw Exception("$e");
     }
-    ;
   }
 }

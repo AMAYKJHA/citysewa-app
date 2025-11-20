@@ -1,5 +1,3 @@
-import "dart:async";
-
 import "package:flutter/material.dart";
 import "package:shared_preferences/shared_preferences.dart"
     show SharedPreferences;
@@ -9,8 +7,6 @@ import "package:citysewa/api/models.dart" show UserModel;
 import 'package:citysewa/screens/home_screen.dart' show HomeScreen;
 import 'package:citysewa/screens/signup_screen.dart' show SignupScreen;
 
-const debugPhone = '12345';
-const debugPass = '12345';
 const appIcon = "lib/assets/app_icon.png";
 
 AuthService auth = AuthService();
