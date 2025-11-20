@@ -48,4 +48,19 @@ class AuthService {
       throw Exception(e);
     }
   }
+
+  // Future updateProfile(String token,String firstName, String lastName, String gender) async {
+  //   var url = Uri.parse("$authEndpoint/update");
+  //   try{
+  //     final response = await http.patch(
+  //       url,
+  //       headers: {"Authorization": token, "Content-Type": "applicaiton/json"},
+  //       body: jsonEncode({})
+  //     );
+
+  //     if(response.statusCode == 200 || response.statusCode == 201){
+
+  //     }
+  //   }catach(e){throw Exception("$e");};
+  // }
 }
