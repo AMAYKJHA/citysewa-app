@@ -1,4 +1,6 @@
 import "package:http/http.dart" as http;
+import "package:shared_preferences/shared_preferences.dart"
+    show SharedPreferences;
 import "dart:convert";
 import "models.dart";
 
@@ -49,18 +51,41 @@ class AuthService {
     }
   }
 
-  // Future updateProfile(String token,String firstName, String lastName, String gender) async {
-  //   var url = Uri.parse("$authEndpoint/update");
-  //   try{
-  //     final response = await http.patch(
-  //       url,
-  //       headers: {"Authorization": token, "Content-Type": "applicaiton/json"},
-  //       body: jsonEncode({})
-  //     );
+  Future<Map> updateProfile(
+    String firstName,
+    String lastName,
+    String gender,
+  ) async {
+    var url = Uri.parse("$authEndpoint/update");
+    final pref = await SharedPreferences.getInstance();
+    String token = pref.getString('userToken')!;
+    final Map body = {};
+    if (firstName != '') {
+      body['first_name'] = firstName;
+    }
+    if (firstName != '') {
+      body['last_name'] = lastName;
+    }
+    body['gender'] = gender;
+    try {
+      final response = await http.patch(
+        url,
+        headers: {
+          "Authorization": "Token $token",
+          "Content-Type": "application/json",
+        },
+        body: jsonEncode(body),
+      );
 
-  //     if(response.statusCode == 200 || response.statusCode == 201){
-
-  //     }
-  //   }catach(e){throw Exception("$e");};
-  // }
+      print(response.body);
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return jsonDecode(response.body);
+      } else {
+        throw Exception("Failed");
+      }
+    } catch (e) {
+      throw Exception("$e");
+    }
+    ;
+  }
 }

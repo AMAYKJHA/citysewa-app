@@ -3,13 +3,14 @@ import "package:flutter/material.dart";
 import "package:citysewa/api/models.dart" show UserModel;
 import "package:citysewa/screens/update_profile_screen.dart"
     show UpdateProfileScreen;
+import "package:shared_preferences/shared_preferences.dart"
+    show SharedPreferences;
 
 const defaultImagePath = "lib/assets/user1.webp";
 const appIcon = "lib/assets/app_icon.png";
 
 class ProfileScreen extends StatefulWidget {
-  UserModel user;
-  ProfileScreen({super.key, required this.user});
+  ProfileScreen({super.key});
 
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
@@ -28,11 +29,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           scrollDirection: Axis.vertical,
           child: Column(
             children: [
-              ProfileHeader(user: widget.user),
+              ProfileHeader(),
               SizedBox(height: 10),
-              Settings(),
-              SizedBox(height: 10),
-              Others(),
+              Menus(),
               SizedBox(height: 10),
               RatingPannel(),
             ],
@@ -44,32 +43,37 @@ class _ProfileScreenState extends State<ProfileScreen> {
 }
 
 class ProfileHeader extends StatefulWidget {
-  UserModel user;
-  ProfileHeader({super.key, required this.user});
+  ProfileHeader({super.key});
 
   @override
   _ProfileHeaderState createState() => _ProfileHeaderState();
 }
 
 class _ProfileHeaderState extends State<ProfileHeader> {
-  String userName = "";
-  String userGender = "";
-  String userCategory = "";
-  String userLocation = "";
+  late String userFirstName;
+  late String userLastName;
+  late String userPhoto;
+  late String userCategory;
+  String userLocation = "Kathmandu";
 
   @override
   void initState() {
     super.initState();
+    _loadUserData();
+  }
+
+  void _loadUserData() async {
+    final pref = await SharedPreferences.getInstance();
+    setState(() {
+      userFirstName = pref.getString('userFirstName') ?? "Your";
+      userLastName = pref.getString('userLastName') ?? "Name";
+      userPhoto = pref.getString('userPhoto') ?? "";
+      userCategory = pref.getString('userCategory') ?? "BASIC";
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    userName = widget.user.firstName == ""
-        ? "Your Name"
-        : "${widget.user.firstName} ${widget.user.lastName}";
-    userLocation = "Kathmandu";
-    userGender = widget.user.gender.toLowerCase();
-    userCategory = widget.user.category;
     return Container(
       padding: EdgeInsets.all(5),
       width: double.infinity,
@@ -88,9 +92,7 @@ class _ProfileHeaderState extends State<ProfileHeader> {
               shape: BoxShape.circle,
             ),
             child: CircleAvatar(
-              backgroundImage: NetworkImage(
-                widget.user.photoUrl ?? defaultImagePath,
-              ),
+              backgroundImage: NetworkImage(userPhoto),
               radius: 45,
             ),
           ),
@@ -99,7 +101,10 @@ class _ProfileHeaderState extends State<ProfileHeader> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 20),
-              Text(userName, style: TextStyle(fontSize: 16)),
+              Text(
+                "$userFirstName $userLastName",
+                style: TextStyle(fontSize: 16),
+              ),
               Text("Current plan: $userCategory"),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -120,8 +125,7 @@ class _ProfileHeaderState extends State<ProfileHeader> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) =>
-                          UpdateProfileScreen(user: widget.user),
+                      builder: (context) => UpdateProfileScreen(),
                     ),
                   );
                 },
@@ -152,8 +156,8 @@ class _ProfileHeaderState extends State<ProfileHeader> {
   }
 }
 
-class Settings extends StatelessWidget {
-  Settings({super.key});
+class Menus extends StatelessWidget {
+  Menus({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -173,28 +177,7 @@ class Settings extends StatelessWidget {
           TileButton(text: "Booking History", action: () {}),
           TileButton(text: "App preferences", action: () {}),
           TileButton(text: "Upgrade to premium", action: () {}),
-        ],
-      ),
-    );
-  }
-}
-
-class Others extends StatelessWidget {
-  Others({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        color: const Color.fromARGB(255, 249, 241, 241),
-        border: BoxBorder.all(width: 1, color: Colors.grey),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+          SizedBox(height: 15),
           Text("Others", style: TextStyle(color: Colors.grey)),
           TileButton(text: "Blocked providers", action: () {}),
           TileButton(text: "Submit complaints", action: () {}),

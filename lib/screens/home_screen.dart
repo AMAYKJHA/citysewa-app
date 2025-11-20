@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
-
+import "package:shared_preferences/shared_preferences.dart"
+    show SharedPreferences;
 import "package:citysewa/screens/profile_screen.dart";
 import "package:citysewa/screens/widgets.dart";
 import "package:citysewa/api/models.dart" show UserModel;
@@ -55,8 +56,7 @@ const List<List<Widget>> offers = [
 ];
 
 class HomeScreen extends StatefulWidget {
-  UserModel user;
-  HomeScreen({super.key, required this.user});
+  HomeScreen({super.key});
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -71,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
         scrollDirection: Axis.vertical,
         child: Column(
           children: [
-            Header(user: widget.user),
+            Header(),
             SizedBox(height: 10),
             Container(
               width: double.infinity,
@@ -115,14 +115,29 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class Header extends StatefulWidget {
-  UserModel user;
-  Header({super.key, required this.user});
+  Header({super.key});
 
   @override
   _HeaderState createState() => _HeaderState();
 }
 
 class _HeaderState extends State<Header> {
+  late String userFirstName;
+  late String userPhoto;
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  void _loadUserData() async {
+    final pref = await SharedPreferences.getInstance();
+    setState(() {
+      userFirstName = pref.getString('userFirstName') ?? "";
+      userPhoto = pref.getString('userPhoto') ?? "";
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -154,15 +169,12 @@ class _HeaderState extends State<Header> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
-                              ProfileScreen(user: widget.user),
+                          builder: (context) => ProfileScreen(),
                         ),
                       );
                     },
                     child: CircleAvatar(
-                      backgroundImage: NetworkImage(
-                        widget.user.photoUrl ?? defaultProfilePhoto,
-                      ),
+                      backgroundImage: NetworkImage(userPhoto),
                       radius: 20,
                     ),
                   ),
@@ -178,9 +190,7 @@ class _HeaderState extends State<Header> {
                         ),
                       ),
                       Text(
-                        widget.user.firstName == ""
-                            ? "there"
-                            : widget.user.firstName,
+                        userFirstName,
                         style: const TextStyle(
                           color: Color.fromARGB(255, 0, 0, 0),
                           fontSize: 16,

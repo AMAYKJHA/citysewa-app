@@ -1,7 +1,8 @@
 import "dart:async";
 
 import "package:flutter/material.dart";
-// import "package:shared_preferences/shared_preferences.dart";
+import "package:shared_preferences/shared_preferences.dart"
+    show SharedPreferences;
 
 import "package:citysewa/api/api_services.dart" show AuthService;
 import "package:citysewa/api/models.dart" show UserModel;
@@ -123,9 +124,21 @@ class _LoginFormState extends State<LoginForm> {
     });
     try {
       UserModel user = await auth.login(phoneNumber, password);
+      final SharedPreferences pref = await SharedPreferences.getInstance();
+      pref.setBool('isLoggedIn', true);
+      pref.setString('userFirstName', user.firstName);
+      pref.setString('userLastName', user.lastName);
+      pref.setString('userGender', user.gender);
+      pref.setString('userCategory', user.category);
+      pref.setString('userEmail', user.email);
+      pref.setString('userToken', user.token);
+      pref.setString(
+        'userPhoto',
+        user.photoUrl ?? "https://placehold.net/avatar.png",
+      );
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomeScreen(user: user)),
+        MaterialPageRoute(builder: (context) => HomeScreen()),
       );
     } catch (e) {
       print("Error: $e");

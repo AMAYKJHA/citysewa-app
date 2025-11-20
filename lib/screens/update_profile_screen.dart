@@ -1,10 +1,13 @@
 import "package:flutter/material.dart";
+import "package:shared_preferences/shared_preferences.dart"
+    show SharedPreferences;
 
-import "package:citysewa/api/models.dart" show UserModel;
+import "package:citysewa/api/api_services.dart" show AuthService;
+
+AuthService auth = AuthService();
 
 class UpdateProfileScreen extends StatefulWidget {
-  UserModel user;
-  UpdateProfileScreen({super.key, required this.user});
+  UpdateProfileScreen({super.key});
 
   @override
   _UpdateProfileScreenState createState() => _UpdateProfileScreenState();
@@ -13,16 +16,46 @@ class UpdateProfileScreen extends StatefulWidget {
 class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   bool isUpdating = false;
   String selectedGender = "MALE";
+
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
   @override
   void initState() {
     super.initState();
   }
 
   @override
-  Widget build(BuildContext context) {
-    TextEditingController firstNameController = TextEditingController();
-    TextEditingController lastNameController = TextEditingController();
+  void dispose() {
+    firstNameController.dispose();
+    lastNameController.dispose();
+    super.dispose();
+  }
 
+  void update(String firstName, String lastName, String gender) async {
+    setState(() {
+      isUpdating = true;
+    });
+    try {
+      final updatedDetails = await auth.updateProfile(
+        firstName,
+        lastName,
+        gender,
+      );
+      final pref = await SharedPreferences.getInstance();
+      pref.setString('userFirstName', updatedDetails['first_name']);
+      pref.setString('userLastName', updatedDetails['last_name']);
+      pref.setString('userGender', updatedDetails['gender']);
+      pref.setString('userPhoto', updatedDetails['photo']);
+    } catch (e) {
+      print(e);
+    }
+    setState(() {
+      isUpdating = false;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Update your profile")),
       backgroundColor: Color(0xfffbf0f9),
@@ -115,7 +148,13 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color.fromARGB(255, 255, 155, 148),
               ),
-              onPressed: () {},
+              onPressed: () {
+                update(
+                  firstNameController.text.toString(),
+                  lastNameController.text.toString(),
+                  selectedGender,
+                );
+              },
               child: isUpdating
                   ? CircularProgressIndicator(color: Colors.white)
                   : Text("Save"),
