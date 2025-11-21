@@ -26,6 +26,5 @@ flutter:
 flutter_icons:
   android: true
   image_path: "lib/assets/app_icon.png"
-  android_adaptive_icon:
-    foreground_image: "lib/assets/app_icon.png"
-    background_color: "#ff0000"
+  adaptive_icon_background: "#ff0000"
+  adaptive_icon_foreground: "lib/assets/app_icon.png"

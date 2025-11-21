@@ -39,8 +39,8 @@ class _CarouselState extends State<Carousel> {
           widget.title,
           style: TextStyle(
             fontSize: 18,
-            fontWeight: FontWeight.w600,
-            color: Color(0xff1e1c1c),
+            fontWeight: FontWeight.w500,
+            color: const Color.fromARGB(255, 122, 122, 122),
           ),
         ),
         Container(

@@ -18,7 +18,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Profile"), centerTitle: true),
+      appBar: AppBar(
+        title: Text("Profile", style: TextStyle(fontSize: 18)),
+        centerTitle: true,
+        toolbarHeight: 35,
+        backgroundColor: Colors.red,
+      ),
       backgroundColor: Color(0xfffbf0f9),
       body: Container(
         width: double.infinity,
@@ -50,6 +55,7 @@ class ProfileHeader extends StatefulWidget {
 class _ProfileHeaderState extends State<ProfileHeader> {
   late String userFirstName;
   late String userLastName;
+  late String userGender;
   late String userPhoto;
   late String userCategory;
   String userLocation = "Kathmandu";
@@ -65,6 +71,7 @@ class _ProfileHeaderState extends State<ProfileHeader> {
     setState(() {
       userFirstName = pref.getString('userFirstName') ?? "Your";
       userLastName = pref.getString('userLastName') ?? "Name";
+      userGender = pref.getString('userGender') ?? "male";
       userPhoto = pref.getString('userPhoto') ?? "";
       userCategory = pref.getString('userCategory') ?? "BASIC";
     });
@@ -76,48 +83,53 @@ class _ProfileHeaderState extends State<ProfileHeader> {
       padding: EdgeInsets.all(5),
       width: double.infinity,
       decoration: BoxDecoration(
-        color: const Color.fromARGB(255, 249, 241, 241),
+        color: Colors.red,
         border: BoxBorder.all(width: 1, color: Colors.grey),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Container(
-            padding: EdgeInsets.all(2),
-            decoration: BoxDecoration(
-              color: const Color.fromARGB(255, 217, 216, 216),
-              shape: BoxShape.circle,
-            ),
-            child: CircleAvatar(
-              backgroundImage: NetworkImage(userPhoto),
-              radius: 45,
-            ),
-          ),
-          SizedBox(width: 10),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          Row(
             children: [
-              SizedBox(height: 20),
-              Text(
-                "$userFirstName $userLastName",
-                style: TextStyle(fontSize: 16),
+              Container(
+                padding: EdgeInsets.all(1),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                ),
+                child: CircleAvatar(
+                  backgroundImage: NetworkImage(userPhoto),
+                  radius: 40,
+                ),
               ),
-              Text("Current plan: $userCategory"),
-              Row(
+              SizedBox(width: 10),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Icon(Icons.location_on, size: 16),
-                  Text(userLocation, style: TextStyle(fontSize: 14)),
+                  Text(
+                    "$userFirstName $userLastName",
+                    style: TextStyle(fontSize: 16, color: Colors.black),
+                  ),
+                  Text(
+                    "Current plan: $userCategory",
+                    style: TextStyle(color: Colors.black),
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Icon(Icons.location_on, size: 16),
+                      Text(userLocation, style: TextStyle(fontSize: 14)),
+                    ],
+                  ),
                 ],
               ),
             ],
           ),
-          const SizedBox(width: 10),
           Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const SizedBox(height: 20),
               InkWell(
                 onTap: () {
                   Navigator.push(
@@ -130,8 +142,8 @@ class _ProfileHeaderState extends State<ProfileHeader> {
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: 5, horizontal: 8),
                   decoration: BoxDecoration(
-                    color: const Color.fromARGB(255, 247, 170, 164),
-                    borderRadius: BorderRadius.circular(20),
+                    color: const Color.fromARGB(255, 214, 245, 250),
+                    borderRadius: BorderRadius.circular(25),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withAlpha(150),

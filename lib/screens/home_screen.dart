@@ -1,7 +1,9 @@
 import "package:flutter/material.dart";
 import "package:shared_preferences/shared_preferences.dart"
     show SharedPreferences;
-import "package:citysewa/screens/profile_screen.dart";
+import "package:citysewa/screens/profile_screen.dart" show ProfileScreen;
+import "package:citysewa/screens/notification_screen.dart"
+    show NotificationScreen;
 import "package:citysewa/screens/widgets.dart";
 
 const appIcon = "lib/assets/app_icon.png";
@@ -64,6 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(toolbarHeight: 0, backgroundColor: Colors.red),
       backgroundColor: Color(0xfffbf0f9),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
@@ -86,8 +89,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       tilesContent: popularServices,
                       tileSize: (150.0, 120.0),
                       tilesColor: [
-                        Color.fromARGB(255, 255, 252, 246),
-                        Colors.white,
+                        Color.fromARGB(255, 252, 83, 71),
+                        Color.fromARGB(255, 249, 165, 159),
+                        Color(0xffffffff),
                       ],
                     ),
                     SizedBox(height: 10),
@@ -96,8 +100,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       tilesContent: offers,
                       tileSize: (200.0, 120.0),
                       tilesColor: const [
-                        Color(0xff6db6fe),
-                        Color(0xffbeddfb),
+                        Color.fromARGB(255, 250, 95, 84),
+                        Color.fromARGB(255, 249, 165, 159),
                         Color(0xffffffff),
                       ],
                     ),
@@ -139,81 +143,72 @@ class _HeaderState extends State<Header> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       width: double.infinity,
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            Color.fromARGB(255, 248, 239, 239),
-            Color.fromARGB(255, 249, 139, 131),
-            Color.fromARGB(255, 250, 25, 8),
-          ],
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-        ),
-        // color: Colors.red,
-        borderRadius: BorderRadius.vertical(bottom: Radius.circular(30)),
-      ),
-      child: Column(
+      decoration: const BoxDecoration(color: Colors.red),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const SizedBox(height: 10),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ProfileScreen()),
+                  );
+                },
+                child: Container(
+                  padding: EdgeInsets.all(1),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white,
+                  ),
+                  child: CircleAvatar(
+                    backgroundImage: NetworkImage(userPhoto),
+                    radius: 20,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 10),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ProfileScreen(),
-                        ),
-                      );
-                    },
-                    child: CircleAvatar(
-                      backgroundImage: NetworkImage(userPhoto),
-                      radius: 20,
+                  const Text(
+                    "Hi,",
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 37, 37, 37),
+                      fontSize: 16,
                     ),
                   ),
-                  const SizedBox(width: 10),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        "Hi,",
-                        style: TextStyle(
-                          color: Color.fromARGB(255, 0, 0, 0),
-                          fontSize: 16,
-                        ),
-                      ),
-                      Text(
-                        userFirstName,
-                        style: const TextStyle(
-                          color: Color.fromARGB(255, 0, 0, 0),
-                          fontSize: 16,
-                        ),
-                      ),
-                    ],
+                  Text(
+                    userFirstName,
+                    style: const TextStyle(
+                      color: Color.fromARGB(255, 37, 37, 37),
+                      fontSize: 16,
+                    ),
                   ),
                 ],
               ),
-              const CircleAvatar(
+            ],
+          ),
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => NotificationScreen()),
+              );
+            },
+            child: Container(
+              padding: EdgeInsets.all(1),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white,
+              ),
+              child: CircleAvatar(
                 backgroundImage: AssetImage(appIcon),
                 radius: 20,
               ),
-            ],
-          ),
-          Container(
-            padding: EdgeInsets.all(5),
-            child: Row(
-              children: [
-                Icon(Icons.location_city_rounded, color: Colors.white),
-                Text(
-                  "Kathmandu, Nepal",
-                  style: TextStyle(fontSize: 16, color: Colors.white),
-                ),
-              ],
             ),
           ),
         ],

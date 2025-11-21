@@ -9,7 +9,7 @@ import "package:citysewa/screens/login_screen.dart" show LoginScreen;
 const appIcon = "lib/assets/app_icon.png";
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
+  SplashScreen({super.key});
 
   @override
   _SplashScreenState createState() => _SplashScreenState();
@@ -27,10 +27,38 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       body: Container(
         width: double.infinity,
-        child: const Column(
+        decoration: BoxDecoration(
+          color: const Color.fromARGB(255, 244, 58, 45),
+        ),
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CircleAvatar(backgroundImage: AssetImage(appIcon), radius: 60),
+            Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withAlpha(150),
+                    offset: Offset(0, 4),
+                    blurRadius: 6,
+                    spreadRadius: 2,
+                  ),
+                ],
+              ),
+              child: CircleAvatar(
+                backgroundImage: AssetImage(appIcon),
+                radius: 70,
+              ),
+            ),
+            SizedBox(height: 10),
+            Text(
+              "Services at your home",
+              style: TextStyle(
+                fontSize: 17,
+                color: const Color.fromARGB(255, 252, 247, 247),
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ],
         ),
       ),
