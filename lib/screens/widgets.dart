@@ -7,15 +7,15 @@ class Carousel extends StatefulWidget {
   final (double, double) tileSize;
   final List<List<Widget>> tilesContent;
   final List<Color> tilesColor;
-  const Carousel(
-      {super.key,
-      required this.tilesContent,
-      this.title = "",
-      this.tileSize = (150.0, 100.0),
-      this.tilesColor = const [
-        Color(0xffffffff),
-        Color(0xffffffff),
-      ]});
+  Carousel({
+    super.key,
+    required this.tilesContent,
+    this.title = "",
+    this.tileSize = (150.0, 100.0),
+    this.tilesColor = const [Color(0xffffffff), Color(0xffffffff)],
+  });
+
+  @override
   _CarouselState createState() => _CarouselState();
 }
 
@@ -24,20 +24,25 @@ class _CarouselState extends State<Carousel> {
   Widget build(BuildContext context) {
     List<Tile> tiles = [];
     for (List content in widget.tilesContent) {
-      tiles.add(Tile(
-        content: content,
-        tileSize: widget.tileSize,
-        colors: widget.tilesColor,
-      ));
+      tiles.add(
+        Tile(
+          content: content,
+          tileSize: widget.tileSize,
+          colors: widget.tilesColor,
+        ),
+      );
     }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(widget.title,
-            style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                color: Color(0xff1e1c1c))),
+        Text(
+          widget.title,
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+            color: Color(0xff1e1c1c),
+          ),
+        ),
         Container(
           padding: EdgeInsets.symmetric(vertical: 5),
           child: SingleChildScrollView(
@@ -47,7 +52,7 @@ class _CarouselState extends State<Carousel> {
               children: tiles,
             ),
           ),
-        )
+        ),
       ],
     );
   }
@@ -63,6 +68,7 @@ class Tile extends StatefulWidget {
     required this.colors,
     required this.content,
   });
+  @override
   _TileState createState() => _TileState();
 }
 
@@ -83,10 +89,7 @@ class _TileState extends State<Tile> {
           end: Alignment.bottomRight,
         ),
       ),
-      child: Column(children: [
-        widget.content[0],
-        widget.content[1],
-      ]),
+      child: Column(children: [widget.content[0], widget.content[1]]),
     );
   }
 }
