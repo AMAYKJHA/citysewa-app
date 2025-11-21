@@ -1,11 +1,9 @@
 import "package:flutter/material.dart";
-
-import "package:citysewa/screens/update_profile_screen.dart"
-    show UpdateProfileScreen;
 import "package:shared_preferences/shared_preferences.dart"
     show SharedPreferences;
 
-const appIcon = "lib/assets/app_icon.png";
+import "package:citysewa/screens/update_profile_screen.dart"
+    show UpdateProfileScreen;
 
 class ProfileScreen extends StatefulWidget {
   ProfileScreen({super.key});
@@ -36,7 +34,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               SizedBox(height: 10),
               Menus(),
               SizedBox(height: 10),
-              RatingPannel(),
             ],
           ),
         ),
@@ -83,7 +80,7 @@ class _ProfileHeaderState extends State<ProfileHeader> {
       padding: EdgeInsets.all(5),
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Colors.red,
+        color: const Color.fromARGB(255, 250, 76, 63),
         border: BoxBorder.all(width: 1, color: Colors.grey),
         borderRadius: BorderRadius.circular(20),
       ),
@@ -128,37 +125,21 @@ class _ProfileHeaderState extends State<ProfileHeader> {
               ),
             ],
           ),
-          Column(
-            children: [
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => UpdateProfileScreen(),
-                    ),
-                  );
-                },
-                child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 5, horizontal: 8),
-                  decoration: BoxDecoration(
-                    color: const Color.fromARGB(255, 214, 245, 250),
-                    borderRadius: BorderRadius.circular(25),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withAlpha(150),
-                        offset: Offset(0, 2),
-                        blurRadius: 2,
-                        blurStyle: BlurStyle.normal,
-                      ),
-                    ],
-                  ),
-                  child: Row(
-                    children: [Text("Edit "), Icon(Icons.edit, size: 16)],
-                  ),
-                ),
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => UpdateProfileScreen()),
+              );
+            },
+            child: Container(
+              padding: EdgeInsets.all(3),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(width: 1),
               ),
-            ],
+              child: Icon(Icons.edit, size: 20),
+            ),
           ),
         ],
       ),
@@ -187,11 +168,20 @@ class Menus extends StatelessWidget {
           TileButton(text: "Booking History", action: () {}),
           TileButton(text: "App preferences", action: () {}),
           TileButton(text: "Upgrade to premium", action: () {}),
-          SizedBox(height: 15),
+          Divider(),
+          Text("Preferencs", style: TextStyle(color: Colors.grey)),
+          TileButton(text: "Notifications", action: () {}),
+          TileButton(text: "Language and region", action: () {}),
+          TileButton(text: "Daily activity", action: () {}),
+          Divider(),
+          Text("Payments", style: TextStyle(color: Colors.grey)),
+          TileButton(text: "Manage ewallet", action: () {}),
+          TileButton(text: "Payment history", action: () {}),
+          Divider(),
           Text("Others", style: TextStyle(color: Colors.grey)),
           TileButton(text: "Blocked providers", action: () {}),
           TileButton(text: "Submit complaints", action: () {}),
-          TileButton(text: "Activity", action: () {}),
+          TileButton(text: "Feedback", action: () {}),
         ],
       ),
     );
@@ -207,52 +197,9 @@ class TileButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: action,
-      child: Text(text, style: TextStyle(fontSize: 15)),
-    );
-  }
-}
-
-class RatingPannel extends StatefulWidget {
-  RatingPannel({super.key});
-
-  @override
-  _RatingPannelState createState() => _RatingPannelState();
-}
-
-class _RatingPannelState extends State<RatingPannel> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
-      child: Column(
-        children: [
-          Text("Rate our service", style: TextStyle(fontSize: 18)),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              InkWell(
-                onTap: () {},
-                child: Icon(Icons.star_border_outlined, size: 30),
-              ),
-              InkWell(
-                onTap: () {},
-                child: Icon(Icons.star_border_outlined, size: 30),
-              ),
-              InkWell(
-                onTap: () {},
-                child: Icon(Icons.star_border_outlined, size: 30),
-              ),
-              InkWell(
-                onTap: () {},
-                child: Icon(Icons.star_border_outlined, size: 30),
-              ),
-              InkWell(
-                onTap: () {},
-                child: Icon(Icons.star_border_outlined, size: 30),
-              ),
-            ],
-          ),
-        ],
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 2),
+        child: Text(text, style: TextStyle(fontSize: 15)),
       ),
     );
   }

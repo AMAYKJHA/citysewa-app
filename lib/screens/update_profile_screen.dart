@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:shared_preferences/shared_preferences.dart"
     show SharedPreferences;
+import "package:image_picker/image_picker.dart";
 
 import "package:citysewa/api/api_services.dart" show AuthService;
 
@@ -16,6 +17,8 @@ class UpdateProfileScreen extends StatefulWidget {
 class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   bool isUpdating = false;
   String selectedGender = "MALE";
+  String? imagePath;
+  String imageName = "";
 
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
@@ -31,7 +34,24 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     super.dispose();
   }
 
-  void update(String firstName, String lastName, String gender) async {
+  void getPhoto() async {
+    final ImagePicker picker = ImagePicker();
+
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      if (image != null) {
+        imagePath = image.path;
+        imageName = image.name;
+      }
+    });
+  }
+
+  void update(
+    String firstName,
+    String lastName,
+    String gender,
+    String? imagePath,
+  ) async {
     setState(() {
       isUpdating = true;
     });
@@ -40,14 +60,18 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
         firstName,
         lastName,
         gender,
+        imagePath,
       );
       final pref = await SharedPreferences.getInstance();
       pref.setString('userFirstName', updatedDetails['first_name']);
       pref.setString('userLastName', updatedDetails['last_name']);
-      pref.setString('userGender', updatedDetails['gender']);
+      pref.setString(
+        'userGender',
+        updatedDetails['gender'].toString().toLowerCase(),
+      );
       pref.setString('userPhoto', updatedDetails['photo']);
     } catch (e) {
-      print(e);
+      // print(e);
     }
     setState(() {
       isUpdating = false;
@@ -64,7 +88,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
         backgroundColor: Colors.red,
       ),
       backgroundColor: Color(0xfffbf0f9),
-      body: Container(
+      body: Padding(
         padding: EdgeInsets.all(10),
         child: Container(
           width: double.infinity,
@@ -74,126 +98,177 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
             borderRadius: BorderRadius.circular(20),
             color: const Color.fromARGB(255, 255, 254, 244),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text("First Name"),
-              Container(
-                margin: EdgeInsets.only(top: 5),
-                height: 40,
-                child: TextField(
-                  controller: firstNameController,
-                  decoration: InputDecoration(
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        width: 2,
-                        color: const Color.fromARGB(255, 249, 101, 101),
-                      ),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(width: 1, color: Colors.grey),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 10),
-              Text("Last Name"),
-              Container(
-                margin: EdgeInsets.only(top: 5),
-                height: 40,
-                child: TextField(
-                  controller: lastNameController,
-                  decoration: InputDecoration(
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        width: 2,
-                        color: const Color.fromARGB(255, 249, 101, 101),
-                      ),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(width: 1, color: Colors.grey),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 10),
-              Text("Gender"),
-              Container(
-                child: Row(
-                  children: [
-                    RadioMenuButton(
-                      value: "MALE",
-                      groupValue: selectedGender,
-                      onChanged: (value) {
-                        setState(() {
-                          selectedGender = value!;
-                        });
-                      },
-                      child: Text("male"),
-                    ),
-                    RadioMenuButton(
-                      value: "FEMALE",
-                      groupValue: selectedGender,
-                      onChanged: (value) {
-                        setState(() => selectedGender = value!);
-                      },
-                      child: Text("female"),
-                    ),
-                    RadioMenuButton(
-                      value: "OTHERS",
-                      groupValue: selectedGender,
-                      onChanged: (value) {
-                        setState(() {
-                          selectedGender = value!;
-                        });
-                      },
-                      child: Text("other"),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 10),
-              InkWell(
-                onTap: () {
-                  update(
-                    firstNameController.text.toString(),
-                    lastNameController.text.toString(),
-                    selectedGender,
-                  );
-                },
-                child: Container(
-                  width: 70,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text("First Name"),
+                Container(
+                  margin: EdgeInsets.only(top: 5),
                   height: 40,
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  decoration: BoxDecoration(
-                    color: const Color.fromARGB(255, 244, 81, 69),
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withAlpha(150),
-                        offset: Offset(0, 2),
-                        blurRadius: 2,
-                        blurStyle: BlurStyle.normal,
+                  child: TextField(
+                    controller: firstNameController,
+                    decoration: InputDecoration(
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          width: 2,
+                          color: const Color.fromARGB(255, 249, 101, 101),
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(width: 1, color: Colors.grey),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 10),
+                Text("Last Name"),
+                Container(
+                  margin: EdgeInsets.only(top: 5),
+                  height: 40,
+                  child: TextField(
+                    controller: lastNameController,
+                    decoration: InputDecoration(
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          width: 2,
+                          color: const Color.fromARGB(255, 249, 101, 101),
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(width: 1, color: Colors.grey),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 10),
+                Text("Gender"),
+                Container(
+                  child: Row(
+                    children: [
+                      RadioMenuButton(
+                        value: "MALE",
+                        groupValue: selectedGender,
+                        onChanged: (value) {
+                          setState(() {
+                            selectedGender = value!;
+                          });
+                        },
+                        child: Text("male"),
+                      ),
+                      RadioMenuButton(
+                        value: "FEMALE",
+                        groupValue: selectedGender,
+                        onChanged: (value) {
+                          setState(() => selectedGender = value!);
+                        },
+                        child: Text("female"),
+                      ),
+                      RadioMenuButton(
+                        value: "OTHERS",
+                        groupValue: selectedGender,
+                        onChanged: (value) {
+                          setState(() {
+                            selectedGender = value!;
+                          });
+                        },
+                        child: Text("other"),
                       ),
                     ],
                   ),
-                  child: Center(
-                    child: isUpdating
-                        ? CircularProgressIndicator(
-                            color: Colors.black.withAlpha(150),
-                          )
-                        : Text(
-                            "Save",
-                            style: TextStyle(fontSize: 16, color: Colors.black),
+                ),
+                Row(
+                  children: [
+                    Text("Photo"),
+                    SizedBox(width: 10),
+                    InkWell(
+                      onTap: () {
+                        getPhoto();
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          vertical: 1,
+                          horizontal: 1,
+                        ),
+                        width: 60,
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 255, 229, 227),
+                          border: Border.all(width: 1, color: Colors.grey),
+                          borderRadius: BorderRadius.circular(2),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withAlpha(150),
+                              offset: Offset(0, 2),
+                              blurRadius: 2,
+                              blurStyle: BlurStyle.normal,
+                            ),
+                          ],
+                        ),
+                        child: Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [Text("Upload")],
                           ),
+                        ),
+                      ),
+                    ),
+                    ConstrainedBox(
+                      constraints: BoxConstraints(maxWidth: 180, maxHeight: 20),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 5),
+                        child: Text(imageName, overflow: TextOverflow.ellipsis),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 10),
+                InkWell(
+                  onTap: () {
+                    update(
+                      firstNameController.text.toString(),
+                      lastNameController.text.toString(),
+                      selectedGender,
+                      imagePath,
+                    );
+                  },
+                  child: Container(
+                    width: 70,
+                    height: 40,
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 244, 81, 69),
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withAlpha(150),
+                          offset: Offset(0, 2),
+                          blurRadius: 2,
+                          blurStyle: BlurStyle.normal,
+                        ),
+                      ],
+                    ),
+                    child: Center(
+                      child: isUpdating
+                          ? CircularProgressIndicator(
+                              color: Colors.black.withAlpha(150),
+                            )
+                          : Text(
+                              "Save",
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.black,
+                              ),
+                            ),
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

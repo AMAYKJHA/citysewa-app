@@ -19,7 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 2), changeScreen);
+    Timer(const Duration(seconds: 3), changeScreen);
   }
 
   @override
@@ -28,7 +28,7 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Container(
         width: double.infinity,
         decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 244, 58, 45),
+          color: const Color.fromARGB(255, 252, 52, 52),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -36,18 +36,18 @@ class _SplashScreenState extends State<SplashScreen> {
             Container(
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
+                color: Colors.blue,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withAlpha(150),
-                    offset: Offset(0, 4),
-                    blurRadius: 6,
-                    spreadRadius: 2,
+                    color: Colors.black26,
+                    blurRadius: 3,
+                    offset: Offset(0, 2),
                   ),
                 ],
               ),
               child: CircleAvatar(
+                radius: 60,
                 backgroundImage: AssetImage(appIcon),
-                radius: 70,
               ),
             ),
             SizedBox(height: 10),
@@ -56,7 +56,7 @@ class _SplashScreenState extends State<SplashScreen> {
               style: TextStyle(
                 fontSize: 17,
                 color: const Color.fromARGB(255, 252, 247, 247),
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w500,
               ),
             ),
           ],

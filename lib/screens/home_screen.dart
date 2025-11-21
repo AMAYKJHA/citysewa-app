@@ -12,28 +12,45 @@ const List<List<Widget>> popularServices = [
   [
     Text(
       "Electrician",
-      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+      style: TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.w500,
+        color: Color.fromARGB(255, 33, 32, 32),
+      ),
     ),
     Icon(Icons.electric_bolt_rounded, size: 60),
   ],
   [
     Text(
-      "Home Tution",
-      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-    ),
-    Icon(Icons.school, size: 60),
-  ],
-  [
-    Text(
       "Plumber",
-      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+      style: TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.w500,
+        color: Color.fromARGB(255, 33, 32, 32),
+      ),
     ),
     Icon(Icons.plumbing, size: 60),
   ],
   [
     Text(
+      "Home Tution",
+      style: TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.w500,
+        color: Color.fromARGB(255, 33, 32, 32),
+      ),
+    ),
+    Icon(Icons.school, size: 60),
+  ],
+
+  [
+    Text(
       "House Help",
-      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+      style: TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.w500,
+        color: Color.fromARGB(255, 33, 32, 32),
+      ),
     ),
     Icon(Icons.house, size: 60),
   ],
@@ -73,7 +90,6 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           children: [
             Header(),
-            SizedBox(height: 10),
             Container(
               width: double.infinity,
               padding: EdgeInsets.symmetric(horizontal: 10),
@@ -82,28 +98,21 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    SizedBox(height: 10),
                     SearchBar(),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 15),
                     Carousel(
                       title: "Popular services",
                       tilesContent: popularServices,
-                      tileSize: (150.0, 120.0),
-                      tilesColor: [
-                        Color.fromARGB(255, 252, 83, 71),
-                        Color.fromARGB(255, 249, 165, 159),
-                        Color(0xffffffff),
-                      ],
+                      tileSize: (170.0, 120.0),
+                      tileColor: Colors.red,
                     ),
                     SizedBox(height: 10),
                     Carousel(
                       title: "Offers",
                       tilesContent: offers,
                       tileSize: (200.0, 120.0),
-                      tilesColor: const [
-                        Color.fromARGB(255, 250, 95, 84),
-                        Color.fromARGB(255, 249, 165, 159),
-                        Color(0xffffffff),
-                      ],
+                      tileColor: Colors.red,
                     ),
                   ],
                 ),
@@ -203,12 +212,10 @@ class _HeaderState extends State<Header> {
               padding: EdgeInsets.all(1),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.white,
+                color: Colors.transparent,
+                border: BoxBorder.all(color: Colors.black),
               ),
-              child: CircleAvatar(
-                backgroundImage: AssetImage(appIcon),
-                radius: 20,
-              ),
+              child: Icon(Icons.notifications, size: 30),
             ),
           ),
         ],
@@ -219,6 +226,8 @@ class _HeaderState extends State<Header> {
 
 class SearchBar extends StatefulWidget {
   const SearchBar({super.key});
+
+  @override
   _SearchBarState createState() => _SearchBarState();
 }
 
@@ -226,11 +235,13 @@ class _SearchBarState extends State<SearchBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 45,
       decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(30),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.25),
-            offset: const Offset(4, 4),
+            offset: const Offset(0, 4),
             blurRadius: 5,
             spreadRadius: 0,
           ),
@@ -245,7 +256,7 @@ class _SearchBarState extends State<SearchBar> {
           filled: true,
           border: OutlineInputBorder(
             borderSide: BorderSide.none,
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(30),
           ),
         ),
       ),

@@ -23,7 +23,6 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xfffbf0f9),
-      appBar: AppBar(toolbarHeight: 0, backgroundColor: Colors.red),
       body: Container(
         width: double.infinity,
         padding: EdgeInsets.all(20),
@@ -182,7 +181,6 @@ class _LoginFormState extends State<LoginForm> {
               hoverColor: Color(0xfffffefe),
               filled: true,
               prefixIcon: Icon(Icons.lock_outline),
-              suffixIcon: Icon(Icons.looks),
               border: OutlineInputBorder(
                 borderSide: BorderSide(width: 1),
                 borderRadius: BorderRadius.circular(10),
@@ -216,8 +214,8 @@ class _LoginFormState extends State<LoginForm> {
                       "Login",
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
               onPressed: () {

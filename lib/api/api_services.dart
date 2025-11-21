@@ -55,27 +55,32 @@ class AuthService {
     String firstName,
     String lastName,
     String gender,
+    String? imagePath,
   ) async {
+    print("$firstName, $lastName, $gender, $imagePath");
     var url = Uri.parse("$authEndpoint/update");
     final pref = await SharedPreferences.getInstance();
     String token = pref.getString('userToken')!;
-    final Map body = {};
-    if (firstName != '') {
-      body['first_name'] = firstName;
-    }
-    if (firstName != '') {
-      body['last_name'] = lastName;
-    }
-    body['gender'] = gender;
     try {
-      final response = await http.patch(
-        url,
-        headers: {
-          "Authorization": "Token $token",
-          "Content-Type": "application/json",
-        },
-        body: jsonEncode(body),
-      );
+      var request = http.MultipartRequest('PATCH', url);
+      if (firstName != '') {
+        request.fields['first_name'] = firstName;
+      }
+      if (firstName != '') {
+        request.fields['last_name'] = lastName;
+      }
+      request.fields['gender'] = gender;
+      if (imagePath != null) {
+        request.files.add(
+          await http.MultipartFile.fromPath('photo', imagePath),
+        );
+      }
+      request.headers.addAll({
+        'Authorization': "Token $token",
+        "Accept": "application/json",
+      });
+      final responseStream = await request.send();
+      final response = await http.Response.fromStream(responseStream);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         return jsonDecode(response.body);
