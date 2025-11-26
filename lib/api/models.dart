@@ -27,9 +27,22 @@ class UserModel {
       token = json['token'];
 }
 
-// class RegisterModel {
-//   String? phoneNumber;
-//   String? password;
+class ProviderModel {
+  String firstName;
+  String lastName;
+  String serviceType;
+  String? photoUrl;
 
-//   RegisterModel({this.phoneNumber, this.password});
-// }
+  ProviderModel({
+    required this.firstName,
+    required this.lastName,
+    required this.serviceType,
+    this.photoUrl,
+  });
+
+  ProviderModel.fromJson(Map<String, dynamic> json)
+    : firstName = json['firstName'],
+      lastName = json['lastName'],
+      serviceType = json['serviceType'],
+      photoUrl = json['photo'];
+}

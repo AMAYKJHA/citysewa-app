@@ -1,12 +1,15 @@
 import "package:flutter/material.dart";
 import "package:shared_preferences/shared_preferences.dart"
     show SharedPreferences;
+
 import "package:citysewa/screens/profile_screen.dart" show ProfileScreen;
 import "package:citysewa/screens/notification_screen.dart"
     show NotificationScreen;
+import "package:citysewa/screens/search_screen.dart" show SearchScreen;
 import "package:citysewa/screens/widgets.dart";
 
 const appIcon = "lib/assets/app_icon.png";
+const defaultProfileImage = "https://placehold.net/avatar-1.png";
 
 const List<List<Widget>> popularServices = [
   [
@@ -145,7 +148,7 @@ class _HeaderState extends State<Header> {
     final pref = await SharedPreferences.getInstance();
     setState(() {
       userFirstName = pref.getString('userFirstName') ?? "";
-      userPhoto = pref.getString('userPhoto') ?? "";
+      userPhoto = pref.getString('userPhoto') ?? defaultProfileImage;
     });
   }
 
@@ -213,9 +216,8 @@ class _HeaderState extends State<Header> {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: Colors.transparent,
-                border: BoxBorder.all(color: Colors.black),
               ),
-              child: Icon(Icons.notifications, size: 30),
+              child: Icon(Icons.notifications, size: 28, color: Colors.black),
             ),
           ),
         ],
@@ -224,42 +226,82 @@ class _HeaderState extends State<Header> {
   }
 }
 
-class SearchBar extends StatefulWidget {
-  const SearchBar({super.key});
+class SearchBar extends StatelessWidget {
+  SearchBar({super.key});
 
-  @override
-  _SearchBarState createState() => _SearchBarState();
-}
-
-class _SearchBarState extends State<SearchBar> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 45,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(30),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.25),
-            offset: const Offset(0, 4),
-            blurRadius: 5,
-            spreadRadius: 0,
-          ),
-        ],
-      ),
-      child: TextField(
-        decoration: InputDecoration(
-          prefixIcon: Icon(Icons.search),
-          hintText: "Search for services",
-          hintStyle: TextStyle(fontSize: 18),
-          fillColor: Color(0xffffffff),
-          filled: true,
-          border: OutlineInputBorder(
-            borderSide: BorderSide.none,
-            borderRadius: BorderRadius.circular(30),
-          ),
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => SearchScreen()),
+        );
+      },
+      child: Container(
+        padding: EdgeInsets.all(10),
+        width: double.infinity,
+        height: 45,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(30),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.25),
+              offset: Offset(0, 4),
+              blurRadius: 5,
+              spreadRadius: 0,
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            Icon(Icons.search),
+            SizedBox(width: 10),
+            Text("Search for services", style: TextStyle(fontSize: 15)),
+          ],
         ),
       ),
     );
   }
 }
+
+// class SearchBar extends StatefulWidget {
+//   const SearchBar({super.key});
+
+//   @override
+//   _SearchBarState createState() => _SearchBarState();
+// }
+
+// class _SearchBarState extends State<SearchBar> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       height: 45,
+//       decoration: BoxDecoration(
+//         borderRadius: BorderRadius.circular(30),
+//         boxShadow: [
+//           BoxShadow(
+//             color: Colors.black.withValues(alpha: 0.25),
+//             offset: const Offset(0, 4),
+//             blurRadius: 5,
+//             spreadRadius: 0,
+//           ),
+//         ],
+//       ),
+//       child: TextField(
+//         decoration: InputDecoration(
+//           prefixIcon: Icon(Icons.search),
+//           hintText: "Search for services",
+//           hintStyle: TextStyle(fontSize: 18),
+//           fillColor: Color(0xffffffff),
+//           filled: true,
+//           border: OutlineInputBorder(
+//             borderSide: BorderSide.none,
+//             borderRadius: BorderRadius.circular(30),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }

@@ -12,6 +12,8 @@ class ProfileScreen extends StatefulWidget {
   _ProfileScreenState createState() => _ProfileScreenState();
 }
 
+const defaultProfileImage = "https://placehold.net/avatar-1.png";
+
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
@@ -69,7 +71,7 @@ class _ProfileHeaderState extends State<ProfileHeader> {
       userFirstName = pref.getString('userFirstName') ?? "Your";
       userLastName = pref.getString('userLastName') ?? "Name";
       userGender = pref.getString('userGender') ?? "male";
-      userPhoto = pref.getString('userPhoto') ?? "";
+      userPhoto = pref.getString('userPhoto') ?? defaultProfileImage;
       userCategory = pref.getString('userCategory') ?? "BASIC";
     });
   }
