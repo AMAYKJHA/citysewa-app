@@ -8,10 +8,13 @@ import "models.dart";
 const baseUrl = "https://citysewa.onrender.com/api";
 
 const authEndpoint = "$baseUrl/auth/customer";
+const loginEndpoint = "$authEndpoint/login";
+const registerEndpoint = "$authEndpoint/register";
+const getProviderEndpoint = "$baseUrl/auth/provider/list";
 
 class AuthService {
   Future<UserModel> login(String phoneNumber, String password) async {
-    final url = Uri.parse("$authEndpoint/login");
+    final url = Uri.parse(loginEndpoint);
     try {
       final response = await http.post(
         url,
@@ -32,7 +35,7 @@ class AuthService {
 
   Future<bool> register(String phoneNumber, String password) async {
     var registerSuccess = false;
-    final url = Uri.parse("$authEndpoint/register");
+    final url = Uri.parse(registerEndpoint);
     try {
       final response = await http.post(
         url,
@@ -57,7 +60,6 @@ class AuthService {
     String gender,
     String? imagePath,
   ) async {
-    print("$firstName, $lastName, $gender, $imagePath");
     var url = Uri.parse("$authEndpoint/update");
     final pref = await SharedPreferences.getInstance();
     String token = pref.getString('userToken')!;
@@ -89,6 +91,30 @@ class AuthService {
       }
     } catch (e) {
       throw Exception("$e");
+    }
+  }
+}
+
+class ProviderService {
+  Future<Map> getProvider(String serviceType) async {
+    final url = Uri.parse("$getProviderEndpoint?service_type=$serviceType");
+    final pref = await SharedPreferences.getInstance();
+    String token = pref.getString('userToken')!;
+
+    try {
+      final response = await http.get(
+        url,
+        headers: {"Authorization": "Token $token"},
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return json.decode(response.body);
+      } else {
+        print(response.statusCode);
+        throw Exception("Bad response");
+      }
+    } catch (e) {
+      throw Exception(e);
     }
   }
 }
