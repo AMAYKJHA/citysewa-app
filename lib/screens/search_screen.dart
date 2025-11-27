@@ -1,6 +1,8 @@
 import "package:flutter/material.dart";
 
 import "package:citysewa/api/api_services.dart" show ProviderService;
+import "package:citysewa/screens/provider_profile_screen.dart"
+    show ProviderProfileScreen;
 
 const defaultProfileImage = "https://placehold.net/avatar-1.png";
 ProviderService provider = ProviderService();
@@ -153,49 +155,79 @@ class ProviderTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: 80,
-      padding: EdgeInsets.all(10),
-      margin: EdgeInsets.symmetric(vertical: 5),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.25),
-            offset: Offset(0, 4),
-            blurRadius: 6,
-            spreadRadius: 0,
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          Container(
-            padding: EdgeInsets.all(1),
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.red,
-            ),
-            child: CircleAvatar(
-              backgroundImage: NetworkImage(photoUrl ?? defaultProfileImage),
-              radius: 30,
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ProviderProfileScreen(
+              firstName: firstName,
+              lastName: lastName,
+              serviceType: serviceType,
             ),
           ),
-          const SizedBox(width: 10),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 5),
-              Text(
-                "$firstName $lastName",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+        );
+      },
+      child: Container(
+        width: double.infinity,
+        height: 80,
+        padding: EdgeInsets.all(10),
+        margin: EdgeInsets.symmetric(vertical: 5),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.25),
+              offset: Offset(0, 4),
+              blurRadius: 6,
+              spreadRadius: 0,
+            ),
+          ],
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: EdgeInsets.all(1),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.red,
               ),
-              Text(serviceType, style: TextStyle(fontSize: 15)),
-            ],
-          ),
-        ],
+              child: CircleAvatar(
+                backgroundImage: NetworkImage(photoUrl ?? defaultProfileImage),
+                radius: 30,
+              ),
+            ),
+            const SizedBox(width: 10),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 5),
+                Row(
+                  children: [
+                    Text(
+                      "$firstName $lastName",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Text("4.5 ", style: TextStyle(fontSize: 13)),
+                        Icon(Icons.star, size: 14, color: Colors.yellow[600]),
+                      ],
+                    ),
+                  ],
+                ),
+                Text(serviceType, style: TextStyle(fontSize: 15)),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

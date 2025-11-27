@@ -5,12 +5,18 @@ import "dart:convert";
 
 import "models.dart";
 
-const baseUrl = "https://citysewa.onrender.com/api";
+const baseUrl = "https://citysewa.onrender.com/api/v1";
 
-const authEndpoint = "$baseUrl/auth/customer";
-const loginEndpoint = "$authEndpoint/login";
-const registerEndpoint = "$authEndpoint/register";
-const getProviderEndpoint = "$baseUrl/auth/provider/list";
+const auth = "$baseUrl/user/auth/customer";
+const booking = "$baseUrl/booking";
+
+// Auth endpoint
+const loginEndpoint = "$auth/login";
+const registerEndpoint = "$auth/register";
+const updateProfileEndpoint = "$auth/update";
+
+// Booking endpoint
+const getProviderEndpoint = "$booking/provider";
 
 class AuthService {
   Future<UserModel> login(String phoneNumber, String password) async {
@@ -60,7 +66,7 @@ class AuthService {
     String gender,
     String? imagePath,
   ) async {
-    var url = Uri.parse("$authEndpoint/update");
+    var url = Uri.parse(updateProfileEndpoint);
     final pref = await SharedPreferences.getInstance();
     String token = pref.getString('userToken')!;
     try {
