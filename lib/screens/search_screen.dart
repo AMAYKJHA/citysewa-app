@@ -126,7 +126,6 @@ class _SearchResultState extends State<SearchResult> {
       future: getServices(widget.serviceType),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          print("Is waiting");
           return Center(child: CircularProgressIndicator(color: Colors.red));
         } else if (snapshot.hasData) {
           final serviceList = snapshot.data;
@@ -224,6 +223,7 @@ class ServiceTile extends StatelessWidget {
                 Text(
                   title,
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+                  overflow: TextOverflow.ellipsis,
                 ),
                 Row(
                   children: [

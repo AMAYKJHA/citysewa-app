@@ -139,4 +139,40 @@ class ServiceAPI {
       throw Exception(e);
     }
   }
+
+  Future<Map<dynamic, dynamic>> serviceCarousel() async {
+    final url = Uri.parse("$serviceEndpoint/carousel");
+    try {
+      final response = await http.get(
+        url,
+        headers: {"Content-Type": "application/json"},
+      );
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return json.decode(response.body);
+      } else {
+        print(response.statusCode);
+        throw Exception("Bad response");
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<Map> featuredService() async {
+    final url = Uri.parse("$serviceEndpoint/featured");
+    try {
+      final response = await http.get(
+        url,
+        headers: {"Content-Type": "application/json"},
+      );
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return json.decode(response.body);
+      } else {
+        print(response.statusCode);
+        throw Exception("Bad response");
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
 }

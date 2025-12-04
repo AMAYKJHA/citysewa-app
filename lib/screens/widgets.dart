@@ -36,3 +36,42 @@ class Carousel extends StatelessWidget {
     );
   }
 }
+
+class ServiceCarousel extends StatelessWidget {
+  final List itemList;
+  final List<Widget> items;
+  ServiceCarousel({super.key, required this.itemList})
+    : items = itemList.map((item) {
+        return InkWell(
+          child: Container(
+            margin: EdgeInsets.symmetric(horizontal: 5),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.25),
+                  offset: Offset(0, 2),
+                  blurRadius: 6,
+                  spreadRadius: 0,
+                ),
+              ],
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(5),
+              child: Image.network(
+                item["thumbnail"]["image"],
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+        );
+      }).toList();
+
+  @override
+  Widget build(BuildContext context) {
+    return CarouselSlider(
+      items: items,
+      options: CarouselOptions(autoPlay: true),
+    );
+  }
+}
