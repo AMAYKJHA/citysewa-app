@@ -2,14 +2,14 @@ import "package:flutter/material.dart";
 import "package:shared_preferences/shared_preferences.dart"
     show SharedPreferences;
 
-import "package:citysewa/api/api_services.dart" show AuthService;
+import "package:citysewa/api/api_services.dart" show AuthAPI;
 import "package:citysewa/api/models.dart" show UserModel;
 import 'package:citysewa/screens/home_screen.dart' show HomeScreen;
 import 'package:citysewa/screens/signup_screen.dart' show SignupScreen;
 
 const appIcon = "lib/assets/app_icon.png";
 
-AuthService auth = AuthService();
+AuthAPI auth = AuthAPI();
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({super.key});

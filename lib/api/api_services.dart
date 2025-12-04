@@ -7,18 +7,18 @@ import "models.dart";
 
 const baseUrl = "https://citysewa.onrender.com/api/v1";
 
-const auth = "$baseUrl/user/auth/customer";
-const booking = "$baseUrl/booking";
+const auth = "$baseUrl/user-mod/auth/customer";
+const services = "$baseUrl/service-mod";
 
 // Auth endpoint
 const loginEndpoint = "$auth/login";
 const registerEndpoint = "$auth/register";
 const updateProfileEndpoint = "$auth/update";
 
-// Booking endpoint
-const getProviderEndpoint = "$booking/provider";
+// Service endpoint
+const serviceEndpoint = "$services/services";
 
-class AuthService {
+class AuthAPI {
   Future<UserModel> login(String phoneNumber, String password) async {
     final url = Uri.parse(loginEndpoint);
     try {
@@ -101,18 +101,34 @@ class AuthService {
   }
 }
 
-class ProviderService {
-  Future<Map> getProvider(String serviceType) async {
-    final url = Uri.parse("$getProviderEndpoint?service_type=$serviceType");
-    final pref = await SharedPreferences.getInstance();
-    String token = pref.getString('userToken')!;
+class ServiceAPI {
+  Future<Map> listService(String serviceType) async {
+    final url = Uri.parse("$serviceEndpoint?service_type=$serviceType");
 
     try {
       final response = await http.get(
         url,
-        headers: {"Authorization": "Token $token"},
+        headers: {"Content-Type": "application/json"},
       );
 
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return json.decode(response.body);
+      } else {
+        print(response.statusCode);
+        throw Exception("Bad response");
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<Map> retrieveService(int serviceId) async {
+    final url = Uri.parse("$serviceEndpoint/$serviceId");
+    try {
+      final response = await http.get(
+        url,
+        headers: {"Content-Type": "application/json"},
+      );
       if (response.statusCode == 200 || response.statusCode == 201) {
         return json.decode(response.body);
       } else {

@@ -1,11 +1,12 @@
+import "dart:io";
+
 import "package:flutter/material.dart";
 
-import "package:citysewa/api/api_services.dart" show ProviderService;
-import "package:citysewa/screens/provider_profile_screen.dart"
-    show ProviderProfileScreen;
+import "package:citysewa/api/api_services.dart" show ServiceAPI;
+import "package:citysewa/screens/service_screen.dart" show ServiceScreen;
 
 const defaultProfileImage = "https://placehold.net/avatar-1.png";
-ProviderService provider = ProviderService();
+ServiceAPI serviceAPI = ServiceAPI();
 
 class SearchScreen extends StatefulWidget {
   SearchScreen({super.key});
@@ -15,7 +16,7 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  String? serviceType;
+  String serviceType = "";
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +93,7 @@ class _SearchBarState extends State<SearchBar> {
 }
 
 class SearchResult extends StatefulWidget {
-  final String? serviceType;
+  final String serviceType;
   const SearchResult({super.key, required this.serviceType});
 
   @override
@@ -100,130 +101,159 @@ class SearchResult extends StatefulWidget {
 }
 
 class _SearchResultState extends State<SearchResult> {
-  List providerList = [];
+  bool isLoading = false;
 
   @override
   void initState() {
     super.initState();
   }
 
-  Future fetchProvider(String serviceType) async {
-    List list = [];
-    try {
-      final result = await provider.getProvider(serviceType = serviceType);
-      list = result['results'];
-      setState(() {
-        providerList = list;
-      });
-    } catch (e) {
-      print(e);
+  Future<List> getServices(String serviceType) async {
+    if (serviceType != "") {
+      try {
+        final result = await serviceAPI.listService(
+          serviceType = serviceType.trim(),
+        );
+        return result['results'];
+      } catch (e) {
+        print(e);
+      }
     }
-    return list;
+    return [];
   }
 
   @override
   Widget build(BuildContext context) {
-    if (widget.serviceType != null) {
-      fetchProvider(widget.serviceType!);
-    } else {}
-    return ListView.builder(
-      itemCount: providerList.length,
-      itemBuilder: (context, index) {
-        return ProviderTile(
-          firstName: providerList[index]['first_name'],
-          lastName: providerList[index]['last_name'],
-          serviceType: providerList[index]['service_type'],
-          photoUrl: providerList[index]['photo'],
-        );
+    return FutureBuilder(
+      future: getServices(widget.serviceType),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          print("Is waiting");
+          return Center(child: CircularProgressIndicator(color: Colors.red));
+        } else if (snapshot.hasData) {
+          final serviceList = snapshot.data;
+          if (serviceList != null) {
+            if (serviceList.isEmpty) {
+              return Center(
+                child: Text(
+                  "No results found",
+                  style: TextStyle(fontSize: 16, color: Colors.grey),
+                ),
+              );
+            }
+            return ListView.builder(
+              itemCount: serviceList.length,
+              itemBuilder: (context, index) {
+                return ServiceTile(
+                  serviceType: serviceList[index]['service_type'],
+                  title: serviceList[index]['title'],
+                  price: serviceList[index]['price'],
+                  pricingType: serviceList[index]['pricing_type'],
+                  provider: serviceList[index]['provider'],
+                  serviceId: serviceList[index]['id'],
+                  thumbnail: serviceList[index]['thumbnail']['image'],
+                );
+              },
+            );
+          } else {
+            return Text(
+              "No results found",
+              style: TextStyle(color: Colors.grey),
+            );
+          }
+        } else {
+          return Text("Find services", style: TextStyle(color: Colors.grey));
+        }
       },
     );
   }
 }
 
-class ProviderTile extends StatelessWidget {
-  final String firstName;
-  final String lastName;
+class ServiceTile extends StatelessWidget {
   final String serviceType;
-  final String? photoUrl;
-  ProviderTile({
+  final String title;
+  final int price;
+  final String pricingType;
+  final Map provider;
+  final String? thumbnail;
+  final int serviceId;
+  final double rating = 4.1;
+
+  ServiceTile({
     super.key,
-    required this.firstName,
-    required this.lastName,
     required this.serviceType,
-    this.photoUrl,
+    required this.title,
+    required this.price,
+    required this.pricingType,
+    required this.provider,
+    required this.serviceId,
+    this.thumbnail,
   });
 
   @override
   Widget build(BuildContext context) {
+    String providerName = "${provider['first_name']} ${provider['last_name']}";
     return InkWell(
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ProviderProfileScreen(
-              firstName: firstName,
-              lastName: lastName,
-              serviceType: serviceType,
-            ),
+            builder: (context) => ServiceScreen(serviceId: serviceId),
           ),
         );
       },
       child: Container(
         width: double.infinity,
         height: 80,
-        padding: EdgeInsets.all(10),
+        padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
         margin: EdgeInsets.symmetric(vertical: 5),
         decoration: BoxDecoration(
-          color: Colors.white,
+          border: Border.all(width: 1, color: Colors.grey),
           borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.25),
-              offset: Offset(0, 4),
-              blurRadius: 6,
-              spreadRadius: 0,
-            ),
-          ],
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              padding: EdgeInsets.all(1),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.red,
-              ),
-              child: CircleAvatar(
-                backgroundImage: NetworkImage(photoUrl ?? defaultProfileImage),
-                radius: 30,
-              ),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(2),
+              child: Image.network(defaultProfileImage, fit: BoxFit.fill),
             ),
             const SizedBox(width: 10),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 5),
+                Text(
+                  title,
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+                ),
                 Row(
                   children: [
                     Text(
-                      "$firstName $lastName",
+                      providerName,
                       style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
+                        fontSize: 12,
+                        color: const Color.fromARGB(255, 134, 134, 134),
                       ),
                     ),
                     const SizedBox(width: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Text("4.5 ", style: TextStyle(fontSize: 13)),
-                        Icon(Icons.star, size: 14, color: Colors.yellow[600]),
-                      ],
+                    Text(
+                      rating.toStringAsFixed(1),
+                      style: TextStyle(
+                        fontSize: 11,
+                        color: const Color.fromARGB(255, 134, 134, 134),
+                      ),
                     ),
+                    Icon(Icons.star, color: Colors.amber, size: 15),
                   ],
                 ),
-                Text(serviceType, style: TextStyle(fontSize: 15)),
+                Text(
+                  "Rs.$price$pricingType",
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: const Color.fromARGB(255, 254, 128, 33),
+                  ),
+                ),
               ],
             ),
           ],

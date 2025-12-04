@@ -6,77 +6,14 @@ import "package:citysewa/screens/profile_screen.dart" show ProfileScreen;
 import "package:citysewa/screens/notification_screen.dart"
     show NotificationScreen;
 import "package:citysewa/screens/search_screen.dart" show SearchScreen;
+// import "package:citysewa/screens/test_screen.dart" show SearchScreen;
 import "package:citysewa/screens/widgets.dart";
 
 const appIcon = "lib/assets/app_icon.png";
 const defaultProfileImage = "https://placehold.net/avatar-1.png";
 
-const List<List<Widget>> popularServices = [
-  [
-    Text(
-      "Electrician",
-      style: TextStyle(
-        fontSize: 18,
-        fontWeight: FontWeight.w500,
-        color: Color.fromARGB(255, 33, 32, 32),
-      ),
-    ),
-    Icon(Icons.electric_bolt_rounded, size: 60),
-  ],
-  [
-    Text(
-      "Plumber",
-      style: TextStyle(
-        fontSize: 18,
-        fontWeight: FontWeight.w500,
-        color: Color.fromARGB(255, 33, 32, 32),
-      ),
-    ),
-    Icon(Icons.plumbing, size: 60),
-  ],
-  [
-    Text(
-      "Home Tution",
-      style: TextStyle(
-        fontSize: 18,
-        fontWeight: FontWeight.w500,
-        color: Color.fromARGB(255, 33, 32, 32),
-      ),
-    ),
-    Icon(Icons.school, size: 60),
-  ],
-
-  [
-    Text(
-      "House Help",
-      style: TextStyle(
-        fontSize: 18,
-        fontWeight: FontWeight.w500,
-        color: Color.fromARGB(255, 33, 32, 32),
-      ),
-    ),
-    Icon(Icons.house, size: 60),
-  ],
-];
-const List<List<Widget>> offers = [
-  [
-    Text(
-      "Save upto 60%",
-      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-    ),
-    Icon(Icons.workspace_premium, size: 60),
-  ],
-  [
-    Text(
-      "Festive offer",
-      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-    ),
-    Icon(Icons.emoji_people_rounded, size: 60),
-  ],
-];
-
 class HomeScreen extends StatefulWidget {
-  HomeScreen({super.key});
+  const HomeScreen({super.key});
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -104,19 +41,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     SizedBox(height: 10),
                     SearchBar(),
                     const SizedBox(height: 15),
-                    Carousel(
-                      title: "Popular services",
-                      tilesContent: popularServices,
-                      tileSize: (170.0, 120.0),
-                      tileColor: Colors.red,
-                    ),
+                    FeaturedCarousel(),
                     SizedBox(height: 10),
-                    Carousel(
-                      title: "Offers",
-                      tilesContent: offers,
-                      tileSize: (200.0, 120.0),
-                      tileColor: Colors.red,
-                    ),
                   ],
                 ),
               ),
@@ -227,7 +153,7 @@ class _HeaderState extends State<Header> {
 }
 
 class SearchBar extends StatelessWidget {
-  SearchBar({super.key});
+  const SearchBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -265,43 +191,3 @@ class SearchBar extends StatelessWidget {
     );
   }
 }
-
-// class SearchBar extends StatefulWidget {
-//   const SearchBar({super.key});
-
-//   @override
-//   _SearchBarState createState() => _SearchBarState();
-// }
-
-// class _SearchBarState extends State<SearchBar> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       height: 45,
-//       decoration: BoxDecoration(
-//         borderRadius: BorderRadius.circular(30),
-//         boxShadow: [
-//           BoxShadow(
-//             color: Colors.black.withValues(alpha: 0.25),
-//             offset: const Offset(0, 4),
-//             blurRadius: 5,
-//             spreadRadius: 0,
-//           ),
-//         ],
-//       ),
-//       child: TextField(
-//         decoration: InputDecoration(
-//           prefixIcon: Icon(Icons.search),
-//           hintText: "Search for services",
-//           hintStyle: TextStyle(fontSize: 18),
-//           fillColor: Color(0xffffffff),
-//           filled: true,
-//           border: OutlineInputBorder(
-//             borderSide: BorderSide.none,
-//             borderRadius: BorderRadius.circular(30),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }

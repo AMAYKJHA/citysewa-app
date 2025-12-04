@@ -3,9 +3,9 @@ import "package:shared_preferences/shared_preferences.dart"
     show SharedPreferences;
 import "package:image_picker/image_picker.dart";
 
-import "package:citysewa/api/api_services.dart" show AuthService;
+import "package:citysewa/api/api_services.dart" show AuthAPI;
 
-AuthService auth = AuthService();
+AuthAPI auth = AuthAPI();
 
 class UpdateProfileScreen extends StatefulWidget {
   UpdateProfileScreen({super.key});
