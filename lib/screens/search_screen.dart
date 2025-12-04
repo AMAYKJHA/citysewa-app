@@ -206,15 +206,15 @@ class ServiceTile extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
         margin: EdgeInsets.symmetric(vertical: 5),
         decoration: BoxDecoration(
-          border: Border.all(width: 1, color: Colors.grey),
+          // border: Border.all(width: 1, color: Colors.grey),
           borderRadius: BorderRadius.circular(10),
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ClipRRect(
-              borderRadius: BorderRadius.circular(2),
-              child: Image.network(defaultProfileImage, fit: BoxFit.fill),
+              borderRadius: BorderRadius.circular(5),
+              child: Image.network(thumbnail!, fit: BoxFit.fill),
             ),
             const SizedBox(width: 10),
             Column(
