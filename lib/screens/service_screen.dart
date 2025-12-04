@@ -31,7 +31,6 @@ class _ServiceScreenState extends State<ServiceScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final service = getService(widget.serviceId);
     return Scaffold(
       appBar: AppBar(toolbarHeight: 0, backgroundColor: Colors.red),
       backgroundColor: Color(0xfffbf0f9),
