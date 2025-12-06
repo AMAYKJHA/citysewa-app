@@ -27,35 +27,17 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       body: Container(
         width: double.infinity,
-        decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 252, 52, 52),
-        ),
+
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.blue,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black26,
-                    blurRadius: 3,
-                    offset: Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: CircleAvatar(
-                radius: 60,
-                backgroundImage: AssetImage(appIcon),
-              ),
-            ),
+            CircleAvatar(radius: 60, backgroundImage: AssetImage(appIcon)),
             SizedBox(height: 10),
             Text(
               "Services at your home",
               style: TextStyle(
                 fontSize: 17,
-                color: const Color.fromARGB(255, 252, 247, 247),
+                color: Colors.red,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -66,19 +48,23 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void changeScreen() async {
-    final pref = await SharedPreferences.getInstance();
-    bool isLoggedIn = pref.getBool('isLoggedIn') ?? false;
+    // final pref = await SharedPreferences.getInstance();
+    // bool isLoggedIn = pref.getBool('isLoggedIn') ?? false;
 
-    if (isLoggedIn) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => HomeScreen()),
-      );
-    } else {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => LoginScreen()),
-      );
-    }
+    // if (isLoggedIn) {
+    //   Navigator.pushReplacement(
+    //     context,
+    //     MaterialPageRoute(builder: (context) => HomeScreen()),
+    //   );
+    // } else {
+    //   Navigator.pushReplacement(
+    //     context,
+    //     MaterialPageRoute(builder: (context) => LoginScreen()),
+    //   );
+    // }
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => HomeScreen()),
+    );
   }
 }

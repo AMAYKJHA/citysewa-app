@@ -1,9 +1,9 @@
 import "package:flutter/material.dart";
 
 // import "package:citysewa/screens/login_screen.dart";
-import "package:citysewa/screens/home_screen.dart" show HomeScreen;
+// import "package:citysewa/screens/home_screen.dart" show HomeScreen;
 // import "package:citysewa/screens/profile_screen.dart";
-// import "screens/splash_screen.dart";
+import "screens/splash_screen.dart";
 
 void main() => runApp(MainApp());
 
@@ -12,6 +12,6 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(debugShowCheckedModeBanner: false, home: HomeScreen());
+    return MaterialApp(debugShowCheckedModeBanner: false, home: SplashScreen());
   }
 }
