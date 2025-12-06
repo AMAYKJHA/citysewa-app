@@ -2,7 +2,7 @@ import "package:flutter/material.dart";
 import "package:shared_preferences/shared_preferences.dart"
     show SharedPreferences;
 
-import "package:citysewa/screens/profile_screen.dart" show ProfileScreen;
+// import "package:citysewa/screens/profile_screen.dart" show ProfileScreen;
 import "package:citysewa/screens/notification_screen.dart"
     show NotificationScreen;
 import "package:citysewa/screens/search_screen.dart" show SearchScreen;
@@ -108,6 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       color: const Color.fromARGB(255, 41, 41, 41),
                     ),
                   ),
+                  SizedBox(height: 5),
                   FutureBuilder(
                     future: getFeaturedService(),
                     builder: (context, snapshot) {
@@ -131,7 +132,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   );
                                 },
                                 child: Padding(
-                                  padding: EdgeInsets.only(right: 5, top: 5),
+                                  padding: EdgeInsets.only(right: 8),
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(5),
                                     child: Image.network(
@@ -147,6 +148,15 @@ class _HomeScreenState extends State<HomeScreen> {
                       }
                       return SizedBox(width: 0, height: 0);
                     },
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    "Popular services",
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
+                      color: const Color.fromARGB(255, 41, 41, 41),
+                    ),
                   ),
                 ],
               ),
@@ -196,10 +206,10 @@ class _HeaderState extends State<Header> {
             children: [
               InkWell(
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ProfileScreen()),
-                  );
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(builder: (context) => ProfileScreen()),
+                  // );
                 },
                 child: Container(
                   padding: EdgeInsets.all(1),

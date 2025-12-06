@@ -36,95 +36,99 @@ class _ServiceScreenState extends State<ServiceScreen> {
     return Scaffold(
       appBar: AppBar(toolbarHeight: 0, backgroundColor: Colors.red),
       backgroundColor: Color(0xfffbf0f9),
-      body: FutureBuilder(
-        future: getService(widget.serviceId),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator(color: Colors.red));
-          } else if (snapshot.hasData) {
-            final service = snapshot.data;
-            List imgList = [];
-            for (Map image in service['gallery']) {
-              imgList.add(image['image']);
-            }
-            return Container(
-              width: double.infinity,
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-              child: ListView(
-                children: [
-                  ConstrainedBox(
-                    constraints: BoxConstraints(maxHeight: 200),
-                    child: Carousel(itemList: imgList),
-                  ),
-                  const SizedBox(height: 5),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        service['title'],
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: const Color.fromARGB(255, 51, 51, 51),
-                        ),
-                      ),
-                      Text(
-                        "Rs.${service['price']}${service['pricing_type']}",
-                        style: TextStyle(fontSize: 16, color: Colors.red),
-                      ),
-                    ],
-                  ),
-                  Text(
-                    "By ${service['provider']['first_name']} ${service['provider']['last_name']}",
-                    style: TextStyle(fontStyle: FontStyle.italic, fontSize: 12),
-                  ),
-                  const SizedBox(height: 10),
-                  Text("Description", style: TextStyle(fontSize: 17)),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.25),
-                          offset: Offset(0, 4),
-                          blurRadius: 6,
-                          spreadRadius: 0,
-                        ),
-                      ],
+      body: SafeArea(
+        child: FutureBuilder(
+          future: getService(widget.serviceId),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: CircularProgressIndicator(color: Colors.red),
+              );
+            } else if (snapshot.hasData) {
+              final service = snapshot.data;
+              List imgList = [];
+              for (Map image in service['gallery']) {
+                imgList.add(image['image']);
+              }
+              return Container(
+                width: double.infinity,
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                child: ListView(
+                  children: [
+                    ConstrainedBox(
+                      constraints: BoxConstraints(maxHeight: 200),
+                      child: Carousel(itemList: imgList),
                     ),
-                    child: Html(
-                      data: service['description'],
-                      style: {"p": Style(fontSize: FontSize(14))},
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      elevation: 4,
-                      backgroundColor: Colors.red,
-                    ),
-                    onPressed: () {},
-                    child: Text(
-                      "Book service",
+                    const SizedBox(height: 5),
+
+                    Text(
+                      service['title'],
                       style: TextStyle(
-                        fontSize: 15,
-                        color: const Color.fromARGB(255, 46, 46, 46),
+                        fontSize: 18,
+                        color: const Color.fromARGB(255, 51, 51, 51),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            );
-          } else {
-            return Center(
-              child: Text(
-                "Some problem occured",
-                style: TextStyle(color: Colors.grey),
-                overflow: TextOverflow.ellipsis,
-              ),
-            );
-          }
-        },
+
+                    Text(
+                      "By ${service['provider']['first_name']} ${service['provider']['last_name']}",
+                      style: TextStyle(
+                        fontStyle: FontStyle.italic,
+                        fontSize: 14,
+                      ),
+                    ),
+                    Text(
+                      "Rs.${service['price']}${service['pricing_type']}",
+                      style: TextStyle(fontSize: 14, color: Colors.red),
+                    ),
+                    const SizedBox(height: 10),
+                    Text("Description", style: TextStyle(fontSize: 17)),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.25),
+                            offset: Offset(0, 4),
+                            blurRadius: 6,
+                            spreadRadius: 0,
+                          ),
+                        ],
+                      ),
+                      child: Html(
+                        data: service['description'],
+                        style: {"p": Style(fontSize: FontSize(14))},
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        elevation: 4,
+                        backgroundColor: Colors.red,
+                      ),
+                      onPressed: () {},
+                      child: Text(
+                        "Book service",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: const Color.fromARGB(255, 46, 46, 46),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            } else {
+              return Center(
+                child: Text(
+                  "Some problem occured",
+                  style: TextStyle(color: Colors.grey),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              );
+            }
+          },
+        ),
       ),
     );
   }

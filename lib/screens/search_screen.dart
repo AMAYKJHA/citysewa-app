@@ -21,20 +21,22 @@ class _SearchScreenState extends State<SearchScreen> {
     return Scaffold(
       appBar: AppBar(toolbarHeight: 0, backgroundColor: Colors.red),
       backgroundColor: Color(0xfffbf0f9),
-      body: Container(
-        padding: EdgeInsets.all(10),
-        child: Column(
-          children: [
-            SearchBar(
-              onSubmit: (value) {
-                setState(() {
-                  serviceType = value;
-                });
-              },
-            ),
-            SizedBox(height: 10),
-            Expanded(child: SearchResult(serviceType: serviceType)),
-          ],
+      body: SafeArea(
+        child: Container(
+          padding: EdgeInsets.all(10),
+          child: Column(
+            children: [
+              SearchBar(
+                onSubmit: (value) {
+                  setState(() {
+                    serviceType = value;
+                  });
+                },
+              ),
+              SizedBox(height: 10),
+              Expanded(child: SearchResult(serviceType: serviceType)),
+            ],
+          ),
         ),
       ),
     );
@@ -76,7 +78,7 @@ class _SearchBarState extends State<SearchBar> {
         decoration: InputDecoration(
           contentPadding: EdgeInsets.all(10),
           prefixIcon: Icon(Icons.search),
-          hintText: "eg: carpenter",
+          hintText: "eg: carpenter, electrician, cook",
           hintStyle: TextStyle(fontSize: 15),
           fillColor: Color(0xffffffff),
           filled: true,
