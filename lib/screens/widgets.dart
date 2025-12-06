@@ -10,22 +10,12 @@ class Carousel extends StatelessWidget {
   final List<Widget> items;
   Carousel({super.key, required this.itemList})
     : items = itemList.map((image) {
-        return Container(
-          margin: EdgeInsets.symmetric(horizontal: 5),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.25),
-                offset: Offset(0, 2),
-                blurRadius: 6,
-                spreadRadius: 0,
-              ),
-            ],
-          ),
+        return Card(
+          elevation: 3,
+          clipBehavior: Clip.antiAlias,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(5),
-            child: Image.network(image, fit: BoxFit.cover),
+            child: Image.network(image, fit: BoxFit.fill),
           ),
         );
       }).toList();
@@ -54,24 +44,14 @@ class ServiceCarousel extends StatelessWidget {
               ),
             );
           },
-          child: Container(
-            margin: EdgeInsets.symmetric(horizontal: 5),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.25),
-                  offset: Offset(0, 2),
-                  blurRadius: 6,
-                  spreadRadius: 0,
-                ),
-              ],
-            ),
+          child: Card(
+            elevation: 3,
+            clipBehavior: Clip.antiAlias,
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(5),
+              borderRadius: BorderRadius.circular(10),
               child: Image.network(
                 item["thumbnail"]["image"],
-                fit: BoxFit.cover,
+                fit: BoxFit.fill,
               ),
             ),
           ),

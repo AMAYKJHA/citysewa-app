@@ -52,7 +52,10 @@ class _ServiceScreenState extends State<ServiceScreen> {
               padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
               child: ListView(
                 children: [
-                  Carousel(itemList: imgList),
+                  ConstrainedBox(
+                    constraints: BoxConstraints(maxHeight: 200),
+                    child: Carousel(itemList: imgList),
+                  ),
                   const SizedBox(height: 5),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

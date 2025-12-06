@@ -87,9 +87,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         if (snapshot.data != null) {
-                          return ServiceCarousel(
-                            context: context,
-                            itemList: snapshot.data!,
+                          return ConstrainedBox(
+                            constraints: BoxConstraints(maxHeight: 200),
+                            child: ServiceCarousel(
+                              context: context,
+                              itemList: snapshot.data!,
+                            ),
                           );
                         }
                       }
@@ -127,11 +130,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   );
                                 },
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(5),
-                                  child: Image.network(
-                                    itemList[index]["thumbnail"]["image"],
-                                    fit: BoxFit.cover,
+                                child: Padding(
+                                  padding: EdgeInsets.only(right: 5, top: 5),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(5),
+                                    child: Image.network(
+                                      itemList[index]["thumbnail"]["image"],
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
                                 ),
                               );
