@@ -87,7 +87,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         if (snapshot.data != null) {
-                          return ServiceCarousel(itemList: snapshot.data!);
+                          return ServiceCarousel(
+                            context: context,
+                            itemList: snapshot.data!,
+                          );
                         }
                       }
                       return SizedBox(width: 0, height: 0);

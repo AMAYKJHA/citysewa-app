@@ -1,6 +1,8 @@
 import "package:flutter/material.dart";
 import "package:carousel_slider/carousel_slider.dart";
 
+import "package:citysewa/screens/service_screen.dart" show ServiceScreen;
+
 const appIcon = "lib/assets/app_icon.png";
 
 class Carousel extends StatelessWidget {
@@ -40,9 +42,18 @@ class Carousel extends StatelessWidget {
 class ServiceCarousel extends StatelessWidget {
   final List itemList;
   final List<Widget> items;
-  ServiceCarousel({super.key, required this.itemList})
+  final BuildContext context;
+  ServiceCarousel({super.key, required this.context, required this.itemList})
     : items = itemList.map((item) {
         return InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ServiceScreen(serviceId: item["service"]),
+              ),
+            );
+          },
           child: Container(
             margin: EdgeInsets.symmetric(horizontal: 5),
             decoration: BoxDecoration(
