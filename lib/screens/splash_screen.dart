@@ -1,10 +1,10 @@
 import "package:flutter/material.dart";
-import 'package:shared_preferences/shared_preferences.dart'
-    show SharedPreferences;
+// import 'package:shared_preferences/shared_preferences.dart'
+//     show SharedPreferences;
 import 'dart:async';
 
 import "package:citysewa/screens/home_screen.dart" show HomeScreen;
-import "package:citysewa/screens/login_screen.dart" show LoginScreen;
+// import "package:citysewa/screens/login_screen.dart" show LoginScreen;
 
 const appIcon = "lib/assets/app_icon.png";
 
@@ -27,7 +27,6 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       body: Container(
         width: double.infinity,
-
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
