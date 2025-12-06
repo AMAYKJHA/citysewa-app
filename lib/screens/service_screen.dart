@@ -73,10 +73,10 @@ class _ServiceScreenState extends State<ServiceScreen> {
                   ),
                   Text(
                     "By ${service['provider']['first_name']} ${service['provider']['last_name']}",
-                    style: TextStyle(fontStyle: FontStyle.italic),
+                    style: TextStyle(fontStyle: FontStyle.italic, fontSize: 12),
                   ),
                   const SizedBox(height: 10),
-                  Text("Description", style: TextStyle(fontSize: 18)),
+                  Text("Description", style: TextStyle(fontSize: 17)),
                   Container(
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -92,7 +92,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                     ),
                     child: Html(
                       data: service['description'],
-                      style: {"p": Style(fontSize: FontSize(15))},
+                      style: {"p": Style(fontSize: FontSize(14))},
                     ),
                   ),
                   const SizedBox(height: 10),

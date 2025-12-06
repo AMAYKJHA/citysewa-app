@@ -76,7 +76,7 @@ class _SearchBarState extends State<SearchBar> {
         decoration: InputDecoration(
           contentPadding: EdgeInsets.all(10),
           prefixIcon: Icon(Icons.search),
-          hintText: "Search for services",
+          hintText: "eg: carpenter",
           hintStyle: TextStyle(fontSize: 15),
           fillColor: Color(0xffffffff),
           filled: true,

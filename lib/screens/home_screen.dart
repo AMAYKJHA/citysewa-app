@@ -105,39 +105,36 @@ class _HomeScreenState extends State<HomeScreen> {
                   FutureBuilder(
                     future: getFeaturedService(),
                     builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        if (snapshot.data != null) {
-                          final itemList = snapshot.data!;
-                          print(itemList[0]["thumbnail"]["image"]);
-                          return SizedBox(
-                            height: 80,
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: itemList.length,
-                              itemBuilder: (context, index) {
-                                return InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => ServiceScreen(
-                                          serviceId: itemList[index]["service"],
-                                        ),
+                      if (snapshot.hasData && snapshot.data != null) {
+                        final itemList = snapshot.data!;
+                        return SizedBox(
+                          height: 80,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: itemList.length,
+                            itemBuilder: (context, index) {
+                              return InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ServiceScreen(
+                                        serviceId: itemList[index]["service"],
                                       ),
-                                    );
-                                  },
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(5),
-                                    child: Image.network(
-                                      itemList[index]["thumbnail"]["image"],
-                                      fit: BoxFit.cover,
                                     ),
+                                  );
+                                },
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(5),
+                                  child: Image.network(
+                                    itemList[index]["thumbnail"]["image"],
+                                    fit: BoxFit.cover,
                                   ),
-                                );
-                              },
-                            ),
-                          );
-                        }
+                                ),
+                              );
+                            },
+                          ),
+                        );
                       }
                       return SizedBox(width: 0, height: 0);
                     },
