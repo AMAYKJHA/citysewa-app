@@ -24,7 +24,10 @@ class Carousel extends StatelessWidget {
   Widget build(BuildContext context) {
     return CarouselSlider(
       items: items,
-      options: CarouselOptions(autoPlay: true),
+      options: CarouselOptions(
+        autoPlay: true,
+        autoPlayInterval: Duration(seconds: 3),
+      ),
     );
   }
 }
@@ -62,7 +65,10 @@ class ServiceCarousel extends StatelessWidget {
   Widget build(BuildContext context) {
     return CarouselSlider(
       items: items,
-      options: CarouselOptions(autoPlay: true),
+      options: CarouselOptions(
+        autoPlay: true,
+        autoPlayInterval: Duration(seconds: 3),
+      ),
     );
   }
 }

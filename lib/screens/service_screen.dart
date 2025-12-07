@@ -111,7 +111,8 @@ class _ServiceScreenState extends State<ServiceScreen> {
                         "Book service",
                         style: TextStyle(
                           fontSize: 15,
-                          color: const Color.fromARGB(255, 46, 46, 46),
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                     ),

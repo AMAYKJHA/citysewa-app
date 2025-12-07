@@ -23,6 +23,7 @@ class _SearchScreenState extends State<SearchScreen> {
       backgroundColor: Color(0xfffbf0f9),
       body: SafeArea(
         child: Container(
+          height: double.infinity,
           padding: EdgeInsets.all(10),
           child: Column(
             children: [
@@ -204,11 +205,19 @@ class ServiceTile extends StatelessWidget {
       child: Container(
         width: double.infinity,
         height: 80,
-        padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+        padding: EdgeInsets.all(5),
         margin: EdgeInsets.symmetric(vertical: 5),
         decoration: BoxDecoration(
-          // border: Border.all(width: 1, color: Colors.grey),
+          color: Colors.white,
           borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.25),
+              offset: Offset(0, 4),
+              blurRadius: 5,
+              spreadRadius: 0,
+            ),
+          ],
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -249,10 +258,7 @@ class ServiceTile extends StatelessWidget {
                 ),
                 Text(
                   "Rs.$price$pricingType",
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: const Color.fromARGB(255, 254, 128, 33),
-                  ),
+                  style: TextStyle(fontSize: 12, color: Colors.red),
                 ),
               ],
             ),

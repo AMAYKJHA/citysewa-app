@@ -76,6 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
           Expanded(
             child: Container(
               width: double.infinity,
+              height: double.infinity,
               padding: EdgeInsets.symmetric(horizontal: 10),
               child: ListView(
                 children: [
