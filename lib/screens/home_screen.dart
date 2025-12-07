@@ -199,7 +199,10 @@ class _HeaderState extends State<Header> {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       width: double.infinity,
-      decoration: const BoxDecoration(color: Colors.red),
+      decoration: BoxDecoration(
+        color: Colors.red,
+        borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -298,9 +301,15 @@ class SearchBar extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Icon(Icons.search),
+            Icon(Icons.search, color: const Color.fromARGB(255, 115, 115, 115)),
             SizedBox(width: 10),
-            Text("Search for services", style: TextStyle(fontSize: 15)),
+            Text(
+              "Search for services",
+              style: TextStyle(
+                fontSize: 15,
+                color: const Color.fromARGB(255, 115, 115, 115),
+              ),
+            ),
           ],
         ),
       ),

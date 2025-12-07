@@ -21,23 +21,21 @@ class _SearchScreenState extends State<SearchScreen> {
     return Scaffold(
       appBar: AppBar(toolbarHeight: 0, backgroundColor: Colors.red),
       backgroundColor: Color(0xfffbf0f9),
-      body: SafeArea(
-        child: Container(
-          height: double.infinity,
-          padding: EdgeInsets.all(10),
-          child: Column(
-            children: [
-              SearchBar(
-                onSubmit: (value) {
-                  setState(() {
-                    serviceType = value;
-                  });
-                },
-              ),
-              SizedBox(height: 10),
-              Expanded(child: SearchResult(serviceType: serviceType)),
-            ],
-          ),
+      body: Container(
+        height: double.infinity,
+        padding: EdgeInsets.all(10),
+        child: Column(
+          children: [
+            SearchBar(
+              onSubmit: (value) {
+                setState(() {
+                  serviceType = value;
+                });
+              },
+            ),
+            SizedBox(height: 10),
+            Expanded(child: SearchResult(serviceType: serviceType)),
+          ],
         ),
       ),
     );
