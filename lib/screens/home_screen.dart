@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
-import "package:shared_preferences/shared_preferences.dart"
-    show SharedPreferences;
+// import "package:shared_preferences/shared_preferences.dart"
+//     show SharedPreferences;
 
 import "package:citysewa/screens/profile_screen.dart" show ProfileScreen;
 import "package:citysewa/screens/login_screen.dart" show LoginScreen;
@@ -174,23 +174,23 @@ class Header extends StatefulWidget {
 class _HeaderState extends State<Header> {
   String userFirstName = "Guest";
   String userPhoto = placeholderImage['G'].toString();
-  late bool isLoggedIn;
+  bool isLoggedIn = false;
   @override
   void initState() {
     super.initState();
-    _loadUserData();
+    // _loadUserData();
   }
 
-  void _loadUserData() async {
-    final pref = await SharedPreferences.getInstance();
-    isLoggedIn = pref.getBool("isLoggedIn") ?? false;
-    if (isLoggedIn) {
-      setState(() {
-        userFirstName = pref.getString('userFirstName')!;
-        userPhoto = pref.getString('userPhoto')!;
-      });
-    }
-  }
+  // void _loadUserData() async {
+  //   final pref = await SharedPreferences.getInstance();
+  //   isLoggedIn = pref.getBool("isLoggedIn") ?? false;
+  //   if (isLoggedIn) {
+  //     setState(() {
+  //       userFirstName = pref.getString('userFirstName')!;
+  //       userPhoto = pref.getString('userPhoto')!;
+  //     });
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {

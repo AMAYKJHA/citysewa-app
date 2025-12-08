@@ -50,17 +50,6 @@ class _SplashScreenState extends State<SplashScreen> {
     // final pref = await SharedPreferences.getInstance();
     // bool isLoggedIn = pref.getBool('isLoggedIn') ?? false;
 
-    // if (isLoggedIn) {
-    //   Navigator.pushReplacement(
-    //     context,
-    //     MaterialPageRoute(builder: (context) => HomeScreen()),
-    //   );
-    // } else {
-    //   Navigator.pushReplacement(
-    //     context,
-    //     MaterialPageRoute(builder: (context) => LoginScreen()),
-    //   );
-    // }
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => HomeScreen()),

@@ -236,7 +236,7 @@ class _LoginFormState extends State<LoginForm> {
                       child: Text(
                         "Work in progress",
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize: 16,
                           fontWeight: FontWeight.bold,
                           fontStyle: FontStyle.italic,
                         ),
