@@ -51,7 +51,6 @@ class _ServiceScreenState extends State<ServiceScreen> {
                 imgList.add(image['image']);
               }
               return Container(
-                width: double.infinity,
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 child: ListView(
                   children: [
@@ -101,18 +100,23 @@ class _ServiceScreenState extends State<ServiceScreen> {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        elevation: 4,
-                        backgroundColor: Colors.red,
-                      ),
-                      onPressed: () {},
-                      child: Text(
-                        "Book service",
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500,
+                    Center(
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(maxWidth: 200),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            elevation: 4,
+                            backgroundColor: Colors.red,
+                          ),
+                          onPressed: () {},
+                          child: Text(
+                            "Book service",
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
                         ),
                       ),
                     ),
