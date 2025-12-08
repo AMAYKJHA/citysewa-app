@@ -108,7 +108,23 @@ class _ServiceScreenState extends State<ServiceScreen> {
                               elevation: 4,
                               backgroundColor: Colors.red,
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  backgroundColor: Colors.red,
+                                  content: Center(
+                                    child: Text(
+                                      "Work in progress",
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        fontStyle: FontStyle.italic,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
                             child: Text(
                               "Book service",
                               style: TextStyle(
