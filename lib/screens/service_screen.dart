@@ -50,8 +50,8 @@ class _ServiceScreenState extends State<ServiceScreen> {
               for (Map image in service['gallery']) {
                 imgList.add(image['image']);
               }
-              return Container(
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              return Padding(
+                padding: EdgeInsets.all(10),
                 child: ListView(
                   children: [
                     ConstrainedBox(
@@ -59,7 +59,6 @@ class _ServiceScreenState extends State<ServiceScreen> {
                       child: Carousel(itemList: imgList),
                     ),
                     const SizedBox(height: 5),
-
                     Text(
                       service['title'],
                       style: TextStyle(
@@ -67,7 +66,6 @@ class _ServiceScreenState extends State<ServiceScreen> {
                         color: const Color.fromARGB(255, 51, 51, 51),
                       ),
                     ),
-
                     Text(
                       "By ${service['provider']['first_name']} ${service['provider']['last_name']}",
                       style: TextStyle(
@@ -101,20 +99,23 @@ class _ServiceScreenState extends State<ServiceScreen> {
                     ),
                     const SizedBox(height: 10),
                     Center(
-                      child: ConstrainedBox(
-                        constraints: BoxConstraints(maxWidth: 200),
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            elevation: 4,
-                            backgroundColor: Colors.red,
-                          ),
-                          onPressed: () {},
-                          child: Text(
-                            "Book service",
-                            style: TextStyle(
-                              fontSize: 15,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500,
+                      child: Padding(
+                        padding: EdgeInsets.all(5),
+                        child: ConstrainedBox(
+                          constraints: BoxConstraints(maxWidth: 200),
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              elevation: 4,
+                              backgroundColor: Colors.red,
+                            ),
+                            onPressed: () {},
+                            child: Text(
+                              "Book service",
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                           ),
                         ),
