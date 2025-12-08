@@ -1,3 +1,5 @@
+import "dart:js_interop";
+
 import "package:flutter/material.dart";
 
 import "package:citysewa/api/api_services.dart" show AuthAPI;
@@ -198,10 +200,28 @@ class _SignupFormState extends State<SignupForm> {
                       ),
                     ),
               onPressed: () {
-                signUp(
-                  phoneController.text.toString(),
-                  passController.text.toString(),
-                );
+                final String phoneNumber = phoneController.text
+                    .toString()
+                    .trim();
+                final String password = passController.text.toString().trim();
+                if (phoneNumber.length == 10 && password.isNotEmpty) {
+                  signUp(phoneNumber, password);
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      backgroundColor: Colors.red,
+                      content: Center(
+                        child: Text(
+                          "Please ensure you entered credentials correctly",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                }
               },
             ),
           ),
