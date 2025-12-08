@@ -2,7 +2,8 @@ import "package:flutter/material.dart";
 import "package:shared_preferences/shared_preferences.dart"
     show SharedPreferences;
 
-// import "package:citysewa/screens/profile_screen.dart" show ProfileScreen;
+import "package:citysewa/screens/profile_screen.dart" show ProfileScreen;
+import "package:citysewa/screens/login_screen.dart" show LoginScreen;
 import "package:citysewa/screens/notification_screen.dart"
     show NotificationScreen;
 import "package:citysewa/screens/search_screen.dart" show SearchScreen;
@@ -24,12 +25,6 @@ const placeholderImage = {
 };
 
 ServiceAPI service = ServiceAPI();
-// final List<String> imageList = [
-//   "lib/assets/image_1.png",
-//   "lib/assets/image_2.png",
-//   "lib/assets/image_3.png",
-//   "lib/assets/image_4.png",
-// ];
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -177,8 +172,9 @@ class Header extends StatefulWidget {
 }
 
 class _HeaderState extends State<Header> {
-  late String userFirstName;
-  late String userPhoto;
+  String userFirstName = "Guest";
+  String userPhoto = placeholderImage['G'].toString();
+  late bool isLoggedIn;
   @override
   void initState() {
     super.initState();
@@ -187,11 +183,13 @@ class _HeaderState extends State<Header> {
 
   void _loadUserData() async {
     final pref = await SharedPreferences.getInstance();
-    setState(() {
-      userFirstName = pref.getString('userFirstName') ?? "Guest";
-      userPhoto =
-          pref.getString('userPhoto') ?? placeholderImage['G'].toString();
-    });
+    isLoggedIn = pref.getBool("isLoggedIn") ?? false;
+    if (isLoggedIn) {
+      setState(() {
+        userFirstName = pref.getString('userFirstName')!;
+        userPhoto = pref.getString('userPhoto')!;
+      });
+    }
   }
 
   @override
@@ -210,10 +208,17 @@ class _HeaderState extends State<Header> {
             children: [
               InkWell(
                 onTap: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(builder: (context) => ProfileScreen()),
-                  // );
+                  if (isLoggedIn) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ProfileScreen()),
+                    );
+                  } else {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => LoginScreen()),
+                    );
+                  }
                 },
                 child: Container(
                   padding: EdgeInsets.all(1),
