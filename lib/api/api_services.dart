@@ -39,14 +39,24 @@ class AuthAPI {
     }
   }
 
-  Future<bool> register(String phoneNumber, String password) async {
+  Future<bool> register(
+    String fisrtName,
+    String lastName,
+    String phoneNumber,
+    String password,
+  ) async {
     var registerSuccess = false;
     final url = Uri.parse(registerEndpoint);
     try {
       final response = await http.post(
         url,
         headers: {"Content-Type": "application/json"},
-        body: jsonEncode({"phone_number": phoneNumber, "password": password}),
+        body: jsonEncode({
+          "first_name": fisrtName,
+          "last_name": lastName,
+          "phone_number": phoneNumber,
+          "password": password,
+        }),
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {

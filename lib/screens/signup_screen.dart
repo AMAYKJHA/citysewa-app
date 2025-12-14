@@ -115,11 +115,21 @@ class _SignupFormState extends State<SignupForm> {
     super.initState();
   }
 
-  void signUp(String phoneNumber, String password) async {
+  void signUp(
+    String fisrtName,
+    String lastName,
+    String phoneNumber,
+    String password,
+  ) async {
     setState(() => isLoading = true);
 
     try {
-      var result = await auth.register(phoneNumber, password);
+      var result = await auth.register(
+        fisrtName,
+        lastName,
+        phoneNumber,
+        password,
+      );
       if (result == true) {
         Navigator.pushReplacement(
           context,
@@ -136,15 +146,60 @@ class _SignupFormState extends State<SignupForm> {
   Widget build(BuildContext context) {
     TextEditingController phoneController = TextEditingController();
     TextEditingController passController = TextEditingController();
+    TextEditingController firstNameController = TextEditingController();
+    TextEditingController lastNameController = TextEditingController();
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          TextField(
+            controller: firstNameController,
+            keyboardType: TextInputType.name,
+            decoration: InputDecoration(
+              hintText: "First name",
+              fillColor: Color(0xfffffefe),
+              prefixIcon: Icon(Icons.abc_rounded),
+              hoverColor: Color(0xfffffefe),
+              filled: true,
+              border: OutlineInputBorder(
+                borderSide: BorderSide(width: 1),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(width: 2),
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+          ),
+          SizedBox(height: 10),
+          TextField(
+            controller: lastNameController,
+            keyboardType: TextInputType.name,
+            decoration: InputDecoration(
+              hintText: "Last name",
+              fillColor: Color(0xfffffefe),
+              hoverColor: Color(0xfffffefe),
+              filled: true,
+              prefixIcon: Icon(Icons.abc),
+              border: OutlineInputBorder(
+                borderSide: BorderSide(width: 1),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(width: 2),
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 10),
           TextField(
             controller: phoneController,
             keyboardType: TextInputType.phone,
+            maxLength: 10,
             decoration: InputDecoration(
+              counterText: '',
               hintText: "Phone Number",
               fillColor: Color(0xfffffefe),
               hoverColor: Color(0xfffffefe),
@@ -160,7 +215,7 @@ class _SignupFormState extends State<SignupForm> {
               ),
             ),
           ),
-          SizedBox(height: 20),
+          SizedBox(height: 10),
           TextField(
             controller: passController,
             obscureText: true,
@@ -198,19 +253,29 @@ class _SignupFormState extends State<SignupForm> {
                       ),
                     ),
               onPressed: () {
+                final String firstName = firstNameController.text
+                    .toString()
+                    .trim();
+                final String lastName = lastNameController.text
+                    .toString()
+                    .trim();
                 final String phoneNumber = phoneController.text
                     .toString()
                     .trim();
                 final String password = passController.text.toString().trim();
-                if (phoneNumber.length == 10 && password.isNotEmpty) {
-                  signUp(phoneNumber, password);
+                if (phoneNumber.length == 10 &&
+                    password.isNotEmpty &&
+                    firstName.isNotEmpty &&
+                    lastName.isNotEmpty) {
+                  signUp(firstName, lastName, phoneNumber, password);
                 } else {
+                  String msg = "Please ensure that you filed form correctly.";
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       backgroundColor: Colors.red,
                       content: Center(
                         child: Text(
-                          "Please ensure you entered credentials correctly",
+                          msg,
                           style: TextStyle(
                             fontSize: 16,
                             fontStyle: FontStyle.italic,

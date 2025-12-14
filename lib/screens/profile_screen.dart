@@ -1,7 +1,6 @@
 import "package:flutter/material.dart";
-import "package:shared_preferences/shared_preferences.dart"
-    show SharedPreferences;
 
+import "package:citysewa/services/pref_service.dart" show PrefService;
 import "package:citysewa/screens/update_profile_screen.dart"
     show UpdateProfileScreen;
 
@@ -66,14 +65,14 @@ class _ProfileHeaderState extends State<ProfileHeader> {
   }
 
   void _loadUserData() async {
-    final pref = await SharedPreferences.getInstance();
-    setState(() {
-      userFirstName = pref.getString('userFirstName') ?? "Your";
-      userLastName = pref.getString('userLastName') ?? "Name";
-      userGender = pref.getString('userGender') ?? "male";
-      userPhoto = pref.getString('userPhoto') ?? defaultProfileImage;
-      userCategory = pref.getString('userCategory') ?? "BASIC";
-    });
+    // final pref = await SharedPreferences.getInstance();
+    // setState(() {
+    //   userFirstName = pref.getString('userFirstName') ?? "Your";
+    //   userLastName = pref.getString('userLastName') ?? "Name";
+    //   userGender = pref.getString('userGender') ?? "male";
+    //   userPhoto = pref.getString('userPhoto') ?? defaultProfileImage;
+    //   userCategory = pref.getString('userCategory') ?? "BASIC";
+    // });
   }
 
   @override

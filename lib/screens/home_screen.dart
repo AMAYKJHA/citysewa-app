@@ -1,7 +1,6 @@
 import "package:flutter/material.dart";
-// import "package:shared_preferences/shared_preferences.dart"
-//     show SharedPreferences;
 
+import "package:citysewa/services/pref_service.dart";
 import "package:citysewa/screens/profile_screen.dart" show ProfileScreen;
 import "package:citysewa/screens/login_screen.dart" show LoginScreen;
 import "package:citysewa/screens/notification_screen.dart"
@@ -178,19 +177,18 @@ class _HeaderState extends State<Header> {
   @override
   void initState() {
     super.initState();
-    // _loadUserData();
+    _loadUserData();
   }
 
-  // void _loadUserData() async {
-  //   final pref = await SharedPreferences.getInstance();
-  //   isLoggedIn = pref.getBool("isLoggedIn") ?? false;
-  //   if (isLoggedIn) {
-  //     setState(() {
-  //       userFirstName = pref.getString('userFirstName')!;
-  //       userPhoto = pref.getString('userPhoto')!;
-  //     });
-  //   }
-  // }
+  void _loadUserData() async {
+    isLoggedIn = PrefService.getValue("isLoggedIn") ?? false;
+    if (isLoggedIn) {
+      setState(() {
+        userFirstName = PrefService.getValue('firstName') ?? userFirstName;
+        userPhoto = PrefService.getValue('photo') ?? userPhoto;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
