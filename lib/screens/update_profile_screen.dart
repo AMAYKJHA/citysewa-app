@@ -1,8 +1,7 @@
 import "package:flutter/material.dart";
-import "package:shared_preferences/shared_preferences.dart"
-    show SharedPreferences;
 import "package:image_picker/image_picker.dart";
 
+import "package:citysewa/services/pref_service.dart" show PrefService;
 import "package:citysewa/api/api_services.dart" show AuthAPI;
 
 AuthAPI auth = AuthAPI();
@@ -16,7 +15,7 @@ class UpdateProfileScreen extends StatefulWidget {
 
 class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   bool isUpdating = false;
-  String selectedGender = "MALE";
+  String selectedGender = PrefService.getValue('gender') ?? "MALE";
   String? imagePath;
   String imageName = "";
 
@@ -62,16 +61,13 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
         gender,
         imagePath,
       );
-      final pref = await SharedPreferences.getInstance();
-      pref.setString('userFirstName', updatedDetails['first_name']);
-      pref.setString('userLastName', updatedDetails['last_name']);
-      pref.setString(
-        'userGender',
-        updatedDetails['gender'].toString().toLowerCase(),
-      );
-      pref.setString('userPhoto', updatedDetails['photo']);
+      PrefService.setUserFirstName(updatedDetails['first_name']);
+      PrefService.setUserLastName(updatedDetails['last_name']);
+      PrefService.setUserGender(updatedDetails['gender']);
+      PrefService.setUserPhoto(updatedDetails['photo']);
     } catch (e) {
       // print(e);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("$e")));
     }
     setState(() {
       isUpdating = false;
@@ -82,7 +78,14 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Update your profile", style: TextStyle(fontSize: 18)),
+        title: Text(
+          "Update your profile",
+          style: TextStyle(
+            fontSize: 18,
+            color: Colors.white,
+            fontStyle: FontStyle.italic,
+          ),
+        ),
         centerTitle: true,
         toolbarHeight: 35,
         backgroundColor: Colors.red,
@@ -96,7 +99,14 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
           decoration: BoxDecoration(
             border: Border.all(width: 1, color: Colors.grey),
             borderRadius: BorderRadius.circular(20),
-            color: const Color.fromARGB(255, 255, 254, 244),
+            gradient: LinearGradient(
+              colors: [
+                const Color.fromARGB(255, 247, 230, 230),
+                const Color.fromARGB(255, 245, 87, 87),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.centerRight,
+            ),
           ),
           child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
@@ -111,10 +121,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                     controller: firstNameController,
                     decoration: InputDecoration(
                       focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          width: 2,
-                          color: const Color.fromARGB(255, 249, 101, 101),
-                        ),
+                        borderSide: BorderSide(width: 2, color: Colors.black),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       border: OutlineInputBorder(
@@ -133,10 +140,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                     controller: lastNameController,
                     decoration: InputDecoration(
                       focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          width: 2,
-                          color: const Color.fromARGB(255, 249, 101, 101),
-                        ),
+                        borderSide: BorderSide(width: 2, color: Colors.black),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       border: OutlineInputBorder(

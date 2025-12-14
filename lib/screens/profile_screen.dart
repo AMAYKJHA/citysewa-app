@@ -18,7 +18,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Profile", style: TextStyle(fontSize: 18)),
+        title: Text(
+          "Profile",
+          style: TextStyle(
+            fontSize: 18,
+            color: Colors.white,
+            fontStyle: FontStyle.italic,
+          ),
+        ),
         centerTitle: true,
         toolbarHeight: 35,
         backgroundColor: Colors.red,
@@ -54,8 +61,21 @@ class _ProfileHeaderState extends State<ProfileHeader> {
   late String userFirstName;
   late String userLastName;
   late String userGender;
-  late String userPhoto;
+  String? userPhoto;
   late String userCategory;
+  Icon photoIcon = Icon(
+    Icons.face,
+    shadows: [
+      BoxShadow(
+        color: Colors.black.withValues(alpha: 0.4),
+        offset: Offset(0, 4),
+        blurRadius: 5,
+        spreadRadius: 0,
+      ),
+    ],
+    size: 60,
+    color: const Color.fromARGB(255, 252, 39, 95),
+  );
   String userLocation = "Kathmandu";
 
   @override
@@ -65,14 +85,28 @@ class _ProfileHeaderState extends State<ProfileHeader> {
   }
 
   void _loadUserData() async {
-    // final pref = await SharedPreferences.getInstance();
-    // setState(() {
-    //   userFirstName = pref.getString('userFirstName') ?? "Your";
-    //   userLastName = pref.getString('userLastName') ?? "Name";
-    //   userGender = pref.getString('userGender') ?? "male";
-    //   userPhoto = pref.getString('userPhoto') ?? defaultProfileImage;
-    //   userCategory = pref.getString('userCategory') ?? "BASIC";
-    // });
+    setState(() {
+      userFirstName = PrefService.getValue('firstName') ?? "Guest";
+      userLastName = PrefService.getValue('lastName') ?? "";
+      userGender = PrefService.getValue('gender') ?? "MALE";
+      userCategory = PrefService.getValue('category') ?? "BASIC";
+      userPhoto = PrefService.getValue('photo');
+      if (userGender == "FEMALE") {
+        photoIcon = Icon(
+          Icons.face_4,
+          shadows: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.4),
+              offset: Offset(0, 4),
+              blurRadius: 5,
+              spreadRadius: 0,
+            ),
+          ],
+          size: 60,
+          color: const Color.fromARGB(255, 252, 39, 95),
+        );
+      }
+    });
   }
 
   @override
@@ -98,8 +132,10 @@ class _ProfileHeaderState extends State<ProfileHeader> {
                   shape: BoxShape.circle,
                 ),
                 child: CircleAvatar(
-                  backgroundImage: NetworkImage(userPhoto),
                   radius: 40,
+                  child: userPhoto != null
+                      ? Image.network(userPhoto!)
+                      : photoIcon,
                 ),
               ),
               SizedBox(width: 10),
@@ -109,18 +145,22 @@ class _ProfileHeaderState extends State<ProfileHeader> {
                 children: [
                   Text(
                     "$userFirstName $userLastName",
-                    style: TextStyle(fontSize: 16, color: Colors.black),
+                    style: TextStyle(fontSize: 16, color: Colors.white),
                   ),
                   Text(
                     "Current plan: $userCategory",
-                    style: TextStyle(color: Colors.black),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontStyle: FontStyle.italic,
+                    ),
                   ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Icon(Icons.location_on, size: 16),
-                      Text(userLocation, style: TextStyle(fontSize: 14)),
-                    ],
+                  Text(
+                    userLocation,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.white,
+                      fontStyle: FontStyle.italic,
+                    ),
                   ),
                 ],
               ),
@@ -137,9 +177,16 @@ class _ProfileHeaderState extends State<ProfileHeader> {
               padding: EdgeInsets.all(3),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(width: 1),
+                border: Border.all(
+                  width: 1,
+                  color: const Color.fromARGB(255, 254, 218, 218),
+                ),
               ),
-              child: Icon(Icons.edit, size: 20),
+              child: Icon(
+                Icons.edit,
+                size: 20,
+                color: const Color.fromARGB(255, 254, 218, 218),
+              ),
             ),
           ),
         ],
@@ -157,7 +204,14 @@ class Menus extends StatelessWidget {
       width: double.infinity,
       padding: EdgeInsets.all(10),
       decoration: BoxDecoration(
-        color: const Color.fromARGB(255, 249, 241, 241),
+        gradient: LinearGradient(
+          colors: [
+            const Color.fromARGB(255, 247, 230, 230),
+            const Color.fromARGB(255, 245, 87, 87),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.centerRight,
+        ),
         border: BoxBorder.all(width: 1, color: Colors.grey),
         borderRadius: BorderRadius.circular(20),
       ),

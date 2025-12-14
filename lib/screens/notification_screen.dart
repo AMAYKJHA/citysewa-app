@@ -13,7 +13,14 @@ class _NotificationScreenState extends State<NotificationScreen> {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 35,
-        title: Text("Notifications", style: TextStyle(fontSize: 18)),
+        title: Text(
+          "Notifications",
+          style: TextStyle(
+            fontSize: 18,
+            color: Colors.white,
+            fontStyle: FontStyle.italic,
+          ),
+        ),
         centerTitle: true,
         backgroundColor: Colors.red,
       ),

@@ -1,10 +1,9 @@
 import "package:flutter/material.dart";
-import "package:shared_preferences/shared_preferences.dart"
-    show SharedPreferences;
 
+import "package:citysewa/services/pref_service.dart" show PrefService;
 import "package:citysewa/api/api_services.dart" show AuthAPI;
 import "package:citysewa/api/models.dart" show UserModel;
-import 'package:citysewa/screens/home_screen.dart' show HomeScreen;
+import 'package:citysewa/screens/profile_screen.dart' show ProfileScreen;
 import 'package:citysewa/screens/signup_screen.dart' show SignupScreen;
 
 const appIcon = "lib/assets/app_icon.png";
@@ -125,22 +124,18 @@ class _LoginFormState extends State<LoginForm> {
     });
     try {
       UserModel user = await auth.login(phoneNumber, password);
-      final SharedPreferences pref = await SharedPreferences.getInstance();
-      pref.setBool('isLoggedIn', true);
-      pref.setString('userFirstName', user.firstName);
-      pref.setString('userLastName', user.lastName);
-      pref.setString('userGender', user.gender);
-      pref.setString('userCategory', user.category);
-      pref.setString('userEmail', user.email);
-      pref.setString('userToken', user.token);
-      pref.setString(
-        'userPhoto',
-        user.photoUrl ?? "https://placehold.net/avatar.png",
-      );
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => HomeScreen()),
-      );
+      // final SharedPreferences pref = await SharedPreferences.getInstance();
+      PrefService.setLoggedIn(true);
+      PrefService.setUserFirstName(user.firstName);
+      PrefService.setUserLastName(user.lastName);
+      PrefService.setUserGender(user.gender);
+      PrefService.setUserCategory(user.category);
+      PrefService.setUserEmai(user.email);
+      if (user.photoUrl != null) {
+        PrefService.setUserPhoto(user.photoUrl!);
+      }
+      PrefService.setUserToken(user.token);
+      Navigator.pop(context, true);
     } catch (e) {
       print("Error: $e");
     }
@@ -161,7 +156,9 @@ class _LoginFormState extends State<LoginForm> {
           TextField(
             controller: phoneController,
             keyboardType: TextInputType.phone,
+            maxLength: 10,
             decoration: InputDecoration(
+              counterText: '',
               hintText: "Phone Number",
               fillColor: Color(0xfffffefe),
               hoverColor: Color(0xfffffefe),
@@ -225,25 +222,29 @@ class _LoginFormState extends State<LoginForm> {
                       ),
                     ),
               onPressed: () {
-                // login(
-                //   phoneController.text.toString(),
-                //   passController.text.toString(),
-                // );
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    backgroundColor: Colors.red,
-                    content: Center(
-                      child: Text(
-                        "Work in progress",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          fontStyle: FontStyle.italic,
+                final phoneNumber = phoneController.text.toString().trim();
+                final password = passController.text.toString().trim();
+                if (phoneNumber.isNotEmpty && password.isNotEmpty) {
+                  login(
+                    phoneController.text.toString(),
+                    passController.text.toString(),
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      backgroundColor: Colors.red,
+                      content: Center(
+                        child: Text(
+                          "Ensure you entered correct credentials.",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontStyle: FontStyle.italic,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                );
+                  );
+                }
               },
             ),
           ),
