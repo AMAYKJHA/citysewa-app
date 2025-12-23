@@ -7,7 +7,7 @@ import "package:citysewa/api/api_services.dart" show AuthAPI;
 AuthAPI auth = AuthAPI();
 
 class UpdateProfileScreen extends StatefulWidget {
-  VoidCallback onSave;
+  final VoidCallback onSave;
   UpdateProfileScreen({super.key, required this.onSave});
 
   @override
@@ -69,6 +69,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
       if (updatedDetails['photo'] != null) {
         PrefService.setUserPhoto(updatedDetails['photo']!);
       }
+      widget.onSave();
       Navigator.pop(context, true);
     } catch (e) {
       // print(e);
@@ -264,7 +265,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                     child: Center(
                       child: isUpdating
                           ? CircularProgressIndicator(
-                              color: Colors.black.withAlpha(150),
+                              color: Colors.black.withAlpha(180),
                             )
                           : Text(
                               "Save",

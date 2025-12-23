@@ -222,23 +222,14 @@ class _HeaderState extends State<Header> {
             children: [
               InkWell(
                 onTap: () {
-                  if (isLoggedIn) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            ProfileScreen(setHomeScreen: _loadUserData),
-                      ),
-                    );
-                  } else {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            LoginScreen(afterLogin: _loadUserData),
-                      ),
-                    );
-                  }
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => isLoggedIn
+                          ? ProfileScreen(setHomeScreen: _loadUserData)
+                          : LoginScreen(afterLogin: _loadUserData),
+                    ),
+                  );
                 },
                 child: Container(
                   padding: EdgeInsets.all(1),

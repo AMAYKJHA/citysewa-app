@@ -141,7 +141,9 @@ class _ProfileHeaderState extends State<ProfileHeader> {
                 child: CircleAvatar(
                   radius: 40,
                   child: userPhoto != null
-                      ? Image.network(userPhoto!)
+                      ? ClipOval(
+                          child: Image.network(userPhoto!, fit: BoxFit.contain),
+                        )
                       : photoIcon,
                 ),
               ),
@@ -175,8 +177,11 @@ class _ProfileHeaderState extends State<ProfileHeader> {
           ),
           InkWell(
             onTap: () {
-              MaterialPageRoute(
-                builder: (context) => UpdateProfileScreen(onSave: _onUpdate),
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => UpdateProfileScreen(onSave: _onUpdate),
+                ),
               );
             },
             child: Container(
