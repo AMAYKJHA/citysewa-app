@@ -41,12 +41,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                     InkWell(
                       onTap: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => LoginScreen(),
-                          ),
-                        );
+                        Navigator.pop(context);
                       },
                       child: Text(
                         "Login",
@@ -131,10 +126,7 @@ class _SignupFormState extends State<SignupForm> {
         password,
       );
       if (result == true) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => LoginScreen()),
-        );
+        Navigator.pop(context);
       }
     } catch (e) {
       print(e);

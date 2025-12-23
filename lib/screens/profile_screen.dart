@@ -5,7 +5,8 @@ import "package:citysewa/screens/update_profile_screen.dart"
     show UpdateProfileScreen;
 
 class ProfileScreen extends StatefulWidget {
-  ProfileScreen({super.key});
+  final VoidCallback setHomeScreen;
+  ProfileScreen({super.key, required this.setHomeScreen});
 
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
@@ -38,7 +39,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           scrollDirection: Axis.vertical,
           child: Column(
             children: [
-              ProfileHeader(),
+              ProfileHeader(setHomeScreen: widget.setHomeScreen),
               SizedBox(height: 10),
               Menus(),
               SizedBox(height: 10),
@@ -51,7 +52,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 }
 
 class ProfileHeader extends StatefulWidget {
-  ProfileHeader({super.key});
+  final VoidCallback setHomeScreen;
+  ProfileHeader({super.key, required this.setHomeScreen});
 
   @override
   _ProfileHeaderState createState() => _ProfileHeaderState();
@@ -91,7 +93,7 @@ class _ProfileHeaderState extends State<ProfileHeader> {
       userGender = PrefService.getValue('gender') ?? "MALE";
       userCategory = PrefService.getValue('category') ?? "BASIC";
       userPhoto = PrefService.getValue('photo');
-      if (userGender == "FEMALE") {
+      if (userPhoto == null && userGender == "FEMALE") {
         photoIcon = Icon(
           Icons.face_4,
           shadows: [
@@ -107,6 +109,11 @@ class _ProfileHeaderState extends State<ProfileHeader> {
         );
       }
     });
+  }
+
+  void _onUpdate() {
+    _loadUserData();
+    widget.setHomeScreen();
   }
 
   @override
@@ -168,9 +175,8 @@ class _ProfileHeaderState extends State<ProfileHeader> {
           ),
           InkWell(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => UpdateProfileScreen()),
+              MaterialPageRoute(
+                builder: (context) => UpdateProfileScreen(onSave: _onUpdate),
               );
             },
             child: Container(

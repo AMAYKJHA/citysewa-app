@@ -3,7 +3,6 @@ import "package:flutter/material.dart";
 import "package:citysewa/services/pref_service.dart" show PrefService;
 import "package:citysewa/api/api_services.dart" show AuthAPI;
 import "package:citysewa/api/models.dart" show UserModel;
-import 'package:citysewa/screens/profile_screen.dart' show ProfileScreen;
 import 'package:citysewa/screens/signup_screen.dart' show SignupScreen;
 
 const appIcon = "lib/assets/app_icon.png";
@@ -11,7 +10,8 @@ const appIcon = "lib/assets/app_icon.png";
 AuthAPI auth = AuthAPI();
 
 class LoginScreen extends StatefulWidget {
-  LoginScreen({super.key});
+  final VoidCallback afterLogin;
+  LoginScreen({super.key, required this.afterLogin});
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -33,7 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 Logo(),
                 WelcomeText(),
-                LoginForm(),
+                LoginForm(afterLogin: widget.afterLogin),
                 SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -44,7 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     InkWell(
                       onTap: () {
-                        Navigator.pushReplacement(
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => SignupScreen(),
@@ -107,7 +107,8 @@ class WelcomeText extends StatelessWidget {
 }
 
 class LoginForm extends StatefulWidget {
-  const LoginForm({super.key});
+  final VoidCallback afterLogin;
+  const LoginForm({super.key, required this.afterLogin});
   _LoginFormState createState() => _LoginFormState();
 }
 
@@ -124,7 +125,6 @@ class _LoginFormState extends State<LoginForm> {
     });
     try {
       UserModel user = await auth.login(phoneNumber, password);
-      // final SharedPreferences pref = await SharedPreferences.getInstance();
       PrefService.setLoggedIn(true);
       PrefService.setUserFirstName(user.firstName);
       PrefService.setUserLastName(user.lastName);
@@ -135,7 +135,8 @@ class _LoginFormState extends State<LoginForm> {
         PrefService.setUserPhoto(user.photoUrl!);
       }
       PrefService.setUserToken(user.token);
-      Navigator.pop(context, true);
+      widget.afterLogin();
+      Navigator.pop(context);
     } catch (e) {
       print("Error: $e");
     }

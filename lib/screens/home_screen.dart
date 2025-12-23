@@ -9,7 +9,7 @@ import "package:citysewa/screens/search_screen.dart" show SearchScreen;
 import "package:citysewa/screens/service_screen.dart" show ServiceScreen;
 import "package:citysewa/api/api_services.dart" show ServiceAPI;
 import "package:citysewa/screens/widgets.dart" show ServiceCarousel;
-import "package:citysewa/screens/constants.dart";
+// import "package:citysewa/screens/constants.dart";
 
 ServiceAPI service = ServiceAPI();
 
@@ -160,8 +160,21 @@ class Header extends StatefulWidget {
 
 class _HeaderState extends State<Header> {
   String userFirstName = "Guest";
-  String userPhoto = placeholderImage['G'].toString();
+  String? userPhoto;
   bool isLoggedIn = false;
+  Icon photoIcon = Icon(
+    Icons.face,
+    shadows: [
+      BoxShadow(
+        color: Colors.black.withValues(alpha: 0.3),
+        offset: Offset(0, 4),
+        blurRadius: 5,
+        spreadRadius: 0,
+      ),
+    ],
+    size: 30,
+    color: const Color.fromARGB(255, 239, 62, 50),
+  );
   @override
   void initState() {
     super.initState();
@@ -173,17 +186,24 @@ class _HeaderState extends State<Header> {
     if (isLoggedIn) {
       setState(() {
         userFirstName = PrefService.getValue('firstName') ?? userFirstName;
-        userPhoto = PrefService.getValue('photo') ?? userPhoto;
+        userPhoto = PrefService.getValue('photo');
+        if (userPhoto == null && PrefService.getValue('gender') == "FEMALE") {
+          photoIcon = Icon(
+            Icons.face_4,
+            shadows: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.3),
+                offset: Offset(0, 4),
+                blurRadius: 5,
+                spreadRadius: 0,
+              ),
+            ],
+            size: 30,
+            color: const Color.fromARGB(255, 239, 62, 50),
+          );
+        }
       });
     }
-  }
-
-  void _navigateToLogin() async {
-    final result = await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => LoginScreen()),
-    );
-    if (result) _loadUserData();
   }
 
   @override
@@ -205,10 +225,19 @@ class _HeaderState extends State<Header> {
                   if (isLoggedIn) {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => ProfileScreen()),
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            ProfileScreen(setHomeScreen: _loadUserData),
+                      ),
                     );
                   } else {
-                    _navigateToLogin();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            LoginScreen(afterLogin: _loadUserData),
+                      ),
+                    );
                   }
                 },
                 child: Container(
@@ -219,7 +248,9 @@ class _HeaderState extends State<Header> {
                   ),
                   child: CircleAvatar(
                     radius: 20,
-                    backgroundImage: NetworkImage(userPhoto),
+                    child: userPhoto != null
+                        ? ClipOval(child: Image.network(userPhoto!))
+                        : photoIcon,
                   ),
                 ),
               ),

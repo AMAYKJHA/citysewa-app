@@ -1,6 +1,6 @@
 import "package:http/http.dart" as http;
-import "package:shared_preferences/shared_preferences.dart"
-    show SharedPreferences;
+
+import "package:citysewa/services/pref_service.dart" show PrefService;
 import "dart:convert";
 
 import "models.dart";
@@ -77,14 +77,13 @@ class AuthAPI {
     String? imagePath,
   ) async {
     var url = Uri.parse(updateProfileEndpoint);
-    final pref = await SharedPreferences.getInstance();
-    String token = pref.getString('userToken')!;
+    String token = PrefService.getValue('token')!;
     try {
       var request = http.MultipartRequest('PATCH', url);
-      if (firstName != '') {
+      if (firstName.isNotEmpty) {
         request.fields['first_name'] = firstName;
       }
-      if (firstName != '') {
+      if (lastName.isNotEmpty) {
         request.fields['last_name'] = lastName;
       }
       request.fields['gender'] = gender;
@@ -103,6 +102,7 @@ class AuthAPI {
       if (response.statusCode == 200 || response.statusCode == 201) {
         return jsonDecode(response.body);
       } else {
+        // print(response.body);
         throw Exception("Failed");
       }
     } catch (e) {

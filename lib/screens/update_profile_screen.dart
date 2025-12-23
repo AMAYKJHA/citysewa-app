@@ -7,7 +7,8 @@ import "package:citysewa/api/api_services.dart" show AuthAPI;
 AuthAPI auth = AuthAPI();
 
 class UpdateProfileScreen extends StatefulWidget {
-  UpdateProfileScreen({super.key});
+  VoidCallback onSave;
+  UpdateProfileScreen({super.key, required this.onSave});
 
   @override
   _UpdateProfileScreenState createState() => _UpdateProfileScreenState();
@@ -61,10 +62,14 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
         gender,
         imagePath,
       );
+
       PrefService.setUserFirstName(updatedDetails['first_name']);
       PrefService.setUserLastName(updatedDetails['last_name']);
       PrefService.setUserGender(updatedDetails['gender']);
-      PrefService.setUserPhoto(updatedDetails['photo']);
+      if (updatedDetails['photo'] != null) {
+        PrefService.setUserPhoto(updatedDetails['photo']!);
+      }
+      Navigator.pop(context, true);
     } catch (e) {
       // print(e);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("$e")));
