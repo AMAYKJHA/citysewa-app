@@ -3,17 +3,18 @@ import "package:flutter_html/flutter_html.dart";
 
 import "package:citysewa/api/api_services.dart" show ServiceAPI;
 import "package:citysewa/screens/widgets.dart" show Carousel;
+import "package:citysewa/screens/booking_screen.dart" show BookingScreen;
 
 const defaultProfileImage = "https://placehold.net/avatar-1.png";
 
 ServiceAPI serviceAPI = ServiceAPI();
 
 class ServiceScreen extends StatefulWidget {
-  final serviceId;
+  final int serviceId;
   ServiceScreen({super.key, required this.serviceId});
 
   @override
-  _ServiceScreenState createState() => _ServiceScreenState();
+  State<ServiceScreen> createState() => _ServiceScreenState();
 }
 
 class _ServiceScreenState extends State<ServiceScreen> {

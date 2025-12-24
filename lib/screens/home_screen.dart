@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:cached_network_image/cached_network_image.dart";
 
 import "package:citysewa/services/pref_service.dart" show PrefService;
 import "package:citysewa/screens/profile_screen.dart" show ProfileScreen;
@@ -240,7 +241,9 @@ class _HeaderState extends State<Header> {
                   child: CircleAvatar(
                     radius: 20,
                     child: userPhoto != null
-                        ? ClipOval(child: Image.network(userPhoto!))
+                        ? ClipOval(
+                            child: CachedNetworkImage(imageUrl: userPhoto!),
+                          )
                         : photoIcon,
                   ),
                 ),
